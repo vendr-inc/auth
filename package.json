@@ -23,8 +23,8 @@
     "sails": "~0.12.7",
     "sails-disk": "~0.10.9",
     "sails-mongo": "^0.12.1",
-    "co":"0.1",
-    "q":"0.1"
+    "co":"*",
+    "q":"*"
   },
   "scripts": {
     "debug": "node debug app.js",
