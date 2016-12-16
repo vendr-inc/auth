@@ -1,7 +1,7 @@
 /**
- * UsersController
+ * AccoutnsController
  *
- * @description :: Server-side logic for managing Users
+ * @description :: Server-side logic for managing Accounts
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 

@@ -15,7 +15,7 @@ module.exports = {
 			// ENABLE THIS LATER
 			// if(Date.now() > Number(found.exp_time)) return res.send(200, Response.failure("This key has expired and is no longer valid."))
 
-			Users.findOne({id:found.account_id}).exec(function(err, found){
+			Accounts.findOne({id:found.account_id}).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
 				if(!found) return res.send(200, Response.failure("There was no account found for this key."))
 				if(found.active == 0) return res.send(200, Response.failure("This account has been disabled."))
@@ -36,7 +36,7 @@ module.exports = {
 			if(err) return res.send(200, Response.failure(err))
 			if(!found) return res.send(200, Response.failure("That was an invalid key."))
 				
-			Users.findOne({id:found.account_id}).exec(function(err, found){
+			Accounts.findOne({id:found.account_id}).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
 				if(!found) return res.send(200, Response.failure("There was no account found for this key."))
 				if(found.active == 0) return res.send(200, Response.failure("This account has been disabled."))

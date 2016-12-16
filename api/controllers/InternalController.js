@@ -35,7 +35,7 @@ module.exports = {
 			// check expiration
 			if(code != "TEST" && Date.now() > Number(found.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
 			
-			Users.findOne({$or:[{phone:data.phone}, {user_name : data.user_name}]}).exec(function(err,ufound){
+			Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name}]}).exec(function(err,ufound){
 
 				if(err) return res.send(200, Response.failure(err))
 				if(ufound){
@@ -43,7 +43,7 @@ module.exports = {
 					if(ufound.user_name == data.user_name) return res.send(200, Response.failure("This user name has already been registered."))
 					}
 				
-				Users.create(data).exec(function(err,created){
+				Accounts.create(data).exec(function(err,created){
 					if(err) return res.send(200, Response.failure(err))
 					if(data.email){
 						Send.email({
@@ -81,7 +81,7 @@ module.exports = {
 
 		var credential = (data.phone?{phone:data.phone}:{user_name : data.user_name})
 		
-		Users.findOne(credential).exec(function(err, found){
+		Accounts.findOne(credential).exec(function(err, found){
 
 			if(err) return res.send(200, Response.failure(err))
 			if(!found) return res.send(200, Response.failure("The login credentials were invalid. Please try again."))

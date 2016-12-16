@@ -37,7 +37,7 @@ module.exports = {
 			fb.api('/me' , { fields : ['id','first_name','last_name','email','birthday','gender','hometown','age_range','interested_in'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 				
-				Users.findOne({$or:[{phone:data.phone}, {user_name : data.user_name} , { facebook:fbres.id }]}).exec(function(err,ufound){
+				Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name} , { facebook:fbres.id }]}).exec(function(err,ufound){
 					if(err) return res.send(200, Response.failure("There seems to have been an issue finding this user."))
 					if(ufound) {
 						
@@ -60,7 +60,7 @@ module.exports = {
 					delete data.code
 
 
-					Users.create(data).exec(function(err,created){
+					Accounts.create(data).exec(function(err,created){
 						if(err) return res.send(200, Response.failure(err))
 						if(data.email){
 							Send.email({
@@ -121,7 +121,7 @@ module.exports = {
 				
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 
-				Users.findOne({facebook : fbres.id}).exec(function(err,found){
+				Accounts.findOne({facebook : fbres.id}).exec(function(err,found){
 					if(err) return res.send(200, Response.failure("There seems to have been an issue with finding this user."))
 					
 					if(!found) return res.send(200, Response.success({

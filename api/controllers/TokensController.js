@@ -15,7 +15,7 @@ module.exports = {
 		data = Validator.run(data,req.body);
 		if(data.failure) return res.send(200, data);
 
-		Users.findOne({phone:data.phone}).exec(function(err,found){
+		Accounts.findOne({phone:data.phone}).exec(function(err,found){
 
 			if(err) return res.send(200, Response.failure(err))
 			if(found) return res.send(200, Response.failure("This phone number has already been registered."))
