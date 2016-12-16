@@ -58,7 +58,7 @@ module.exports.connections = {
   ***************************************************************************/
   AuthMongo: {
     adapter: 'sails-mongo',
-    host: 'test.peoplr.tech',
+    host: "ec2-35-166-111-124.us-west-2.compute.amazonaws.com",
     port: 27017,
     // user: 'username', //optional
     // password: 'password', //optional

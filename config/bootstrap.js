@@ -20,11 +20,13 @@ module.exports.bootstrap = function(cb) {
 	global.request = require('request');
 	global.q = require("q");
 
+	global.lhost = "ec2-35-166-111-124.us-west-2.compute.amazonaws.com"
+
 	global.mongodb = require('mongodb').ObjectID
 
 
   	var redis = require("redis");
-	global.redisclient = redis.createClient({host: "test.peoplr.tech", port:"6379"});
+	global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
 
 	const{ tryCatch } = require('co-try-catch');
@@ -32,12 +34,12 @@ module.exports.bootstrap = function(cb) {
 	global.services = {
 		financials : {
 			service : 'financials',
-			host : 'http://test.peoplr.tech',
+			host : 'http://' + lhost,
 			port : '1338'
 			},
 		auth : {
 			service : 'auth',
-			host : 'http://test.peoplr.tech',
+			host : 'http://' + lhost,
 			port : '1337'
 			}
 		}
