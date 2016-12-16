@@ -25,7 +25,8 @@
     "sails-mongo": "^0.12.1",
     "co":"*",
     "q":"*",
-    "redis":"*"
+    "redis":"*",
+    "co-try-catch":"*"
   },
   "scripts": {
     "debug": "node debug app.js",
