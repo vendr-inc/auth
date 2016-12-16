@@ -58,7 +58,8 @@ module.exports.connections = {
   ***************************************************************************/
   AuthMongo: {
     adapter: 'sails-mongo',
-    host: lhost,
+    host: "localhost",
+    // host: lhost,
     port: 27017,
     // user: 'username', //optional
     // password: 'password', //optional
