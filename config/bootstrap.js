@@ -20,7 +20,8 @@ module.exports.bootstrap = function(cb) {
 	global.request = require('request');
 	global.q = require("q");
 
-	global.lhost = "ec2-35-166-111-124.us-west-2.compute.amazonaws.com"
+	// global.lhost = "ec2-35-166-111-124.us-west-2.compute.amazonaws.com"
+	global.lhost = "localhost"
 
 	global.mongodb = require('mongodb').ObjectID
 
