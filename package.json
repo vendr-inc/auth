@@ -27,7 +27,8 @@
     "q":"*",
     "redis":"*",
     "co-try-catch":"*",
-    "twilio":"*"
+    "twilio":"*",
+    "nodemailer":"*"
   },
   "scripts": {
     "debug": "node debug app.js",

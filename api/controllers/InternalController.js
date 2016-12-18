@@ -46,12 +46,12 @@ module.exports = {
 				Accounts.create(data).exec(function(err,created){
 					if(err) return res.send(200, Response.failure(err))
 					if(data.email){
-						Send.email({
-							to: data.email,
-							subject: 'Welcome to Sellyx',
-							text: 'Please check the following link to verify:',
-							html: '<a href="https://accounts.peoplr.tech/verify/email?id=' + created.id + '&token=' + data.email_token + '"> Verify </a>'
-							})
+						// Send.email({
+						// 	to: data.email,
+						// 	subject: 'Welcome to Sellyx',
+						// 	text: 'Please check the following link to verify:',
+						// 	html: '<a href="https://accounts.peoplr.tech/verify/email?id=' + created.id + '&token=' + data.email_token + '"> Verify </a>'
+						// 	})
 						}
 
 					if(code != "TEST"){
