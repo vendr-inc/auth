@@ -32,7 +32,7 @@ module.exports = {
 					from : "+14152149780",
 					body : "Your Peoplr code is: " + token + ". Please use this code within 5 minutes to continue login."
 					} , function(err, msg){
-						
+						console.log(err)
 						if(err) return res.send(200, Response.failure("The code could not be sent."))
 
 						if(found){
