@@ -23,7 +23,7 @@ module.exports = {
 			Tokens.findOne({ data : data.phone , type : "phone/send" }).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
 				
-				var token = found?found.token:Math.floor(Math.random() * 9000) + 1000
+				var token = Math.floor(Math.random() * 9000) + 1000
 
 				var client = require('twilio')("ACdd27abf6914ae131ad2248a529eff4aa", "9e2f645e33b1ac624a84deea89cebcc6")
 
@@ -37,7 +37,8 @@ module.exports = {
 
 						if(found){
 							Tokens.update({phone:data.phone,type:"phone/send"},{
-								exp_time : Date.now() + (60*60*5),
+								exp_time : Date.now() + (60*60*5*1000),
+								token : token,
 								}).exec(function(err, created){
 									if(err) return res.send(200, Response.failure(err))
 									return res.send(200, Response.success("A code was sent to " + data.phone + "."))
@@ -48,7 +49,7 @@ module.exports = {
 								type : "phone/send",
 								token : token,
 								data : data.phone,
-								exp_time : Date.now() + (60*60*5),
+								exp_time : Date.now() + (60*60*5*1000),
 								}).exec(function(err, created){
 									if(err) return res.send(200, Response.failure(err))
 									return res.send(200, Response.success("A code was sent to " + data.phone + "."))
