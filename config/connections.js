@@ -1,4 +1,4 @@
-mong/**
+/**
  * Connections
  * (sails.config.connections)
  *
