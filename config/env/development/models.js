@@ -28,7 +28,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   migrate: 'drop',
-  connection: 'AuthMongo',
+  connection: 'MongoDev',
   // schema : true
 
 };

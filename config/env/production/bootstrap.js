@@ -20,14 +20,13 @@ module.exports.bootstrap = function(cb) {
 	global.request = require('request');
 	global.q = require("q");
 
-	// global.lhost = "ec2-35-166-111-124.us-west-2.compute.amazonaws.com"
 	global.lhost = "localhost"
 
 	global.mongodb = require('mongodb').ObjectID
 
 
-  	var redis = require("redis");
-	global.redisclient = redis.createClient({host: lhost, port:"6379"});
+ //  	var redis = require("redis");
+	// global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
 
 	const{ tryCatch } = require('co-try-catch');
@@ -36,12 +35,12 @@ module.exports.bootstrap = function(cb) {
 		financials : {
 			service : 'financials',
 			host : 'http://' + lhost,
-			port : '1338'
+			port : '80'
 			},
 		auth : {
 			service : 'auth',
 			host : 'http://' + lhost,
-			port : '1337'
+			port : '80'
 			}
 		}
 

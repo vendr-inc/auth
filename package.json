@@ -37,7 +37,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aamir/auth.git"
+    "url": "git://github.com/vendr-inc/auth.git"
   },
   "author": "aamir",
   "license": ""
