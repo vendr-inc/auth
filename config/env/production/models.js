@@ -29,7 +29,7 @@ module.exports.models = {
   ***************************************************************************/
   migrate: 'drop',
   connection: 'MongoProd',
-  hookTimeout: 40000
+  _hookTimeout: 60000
   // schema : true
 
 };
