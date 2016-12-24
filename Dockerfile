@@ -14,6 +14,6 @@ RUN npm install
 
 COPY . /service/app
 
-EXPOSE 1337
+EXPOSE 80
 
-CMD NODE_ENV=development sails lift
+CMD NODE_ENV=production sails lift
