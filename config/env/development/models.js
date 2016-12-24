@@ -29,7 +29,6 @@ module.exports.models = {
   ***************************************************************************/
   migrate: 'drop',
   connection: 'MongoDev',
-  _hookTimeout: 40000
   // schema : true
 
 };
