@@ -28,8 +28,6 @@ module.exports.bootstrap = function(cb) {
  //  	var redis = require("redis");
 	// global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
-	console.log("we made it here..")
-
 	const{ tryCatch } = require('co-try-catch');
 
 	global.services = {
