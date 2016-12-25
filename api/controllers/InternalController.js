@@ -39,7 +39,7 @@ module.exports = {
 
 				if(err) return res.send(200, Response.failure(err))
 				if(ufound){
-					if(ufound.phone == data.phone) return res.send(200, Response.failure("This phone number has already been registered. Check ittttttttttt."))
+					if(ufound.phone == data.phone) return res.send(200, Response.failure("This phone number has already been registered."))
 					if(ufound.user_name == data.user_name) return res.send(200, Response.failure("This user name has already been registered."))
 					}
 				
