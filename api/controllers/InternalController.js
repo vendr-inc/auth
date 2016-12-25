@@ -27,6 +27,8 @@ module.exports = {
 		var code = data.code;
 		delete data.code
 
+		// making small change
+
 
 		Tokens.findOne({ data : data.phone , token : code }).exec(function(err, found){
 			if(err) return res.send(200, Response.failure(err))

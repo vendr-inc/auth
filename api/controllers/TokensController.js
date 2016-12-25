@@ -36,7 +36,7 @@ module.exports = {
 						if(err) return res.send(200, Response.failure("The code could not be sent."))
 
 						if(found){
-							Tokens.update({phone:data.phone,type:"phone/send"},{
+							Tokens.update({data:data.phone,type:"phone/send"},{
 								exp_time : Date.now() + (60*60*5*1000),
 								token : token,
 								}).exec(function(err, created){
