@@ -6,6 +6,14 @@ Service Servers
 
 	sudo npm install sails -g
 	sudo npm install grunt -g
+	sudo npm install forever -g
+
+	install jenkins and give sudo priveges
+
+		sudo su
+		visudo -f /etc/sudoers
+
+		ADD AT THE END : jenkins ALL=NOPASSWD: ALL
 
 mongo as service
 
@@ -27,3 +35,7 @@ mongo as service
 	   > db.auth('admin','123456');
 	  ii) run & login to mongo in command line.
 	   $ ./mongodb/bin/mongo localhost:27017/admin -u admin-p 123456
+
+
+
+https://code.tutsplus.com/tutorials/setting-up-continuous-integration-continuous-deployment-with-jenkins--cms-21511
