@@ -104,8 +104,11 @@ module.exports = {
 					return res.send(200, Response.success({
 						msg : "Valid login.",
 						data : {
+							auth_first_name : found.first_name,
+							auth_last_name : found.last_name,
 							auth_name : found.first_name + " " + found.last_name,
 							auth_user_name : found.user_name,
+							auth_phone : found.phone,
 							auth_email : found.email,
 							auth_id : found.id,
 							auth_key : created.key,
