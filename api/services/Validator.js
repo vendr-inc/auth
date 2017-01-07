@@ -56,7 +56,7 @@ module.exports = {
 							}
 							break;
 						case "email":
-							 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(tbtested)) go++
+							 if ((/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(tbtested)) go++
 							 else errors[key] = { msg : 'This is not a valid email address.' }  
 							break;
 						case "array":
