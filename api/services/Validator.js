@@ -55,9 +55,13 @@ module.exports = {
 							 	   }
 							}
 							break;
+						case "email":
+							 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(tbtested)) go++
+							 else errors[key] = { msg : 'This is not a valid email address.' }  
+							break;
 						case "array":
 							if(tbtested.constructor == Array) go++
-								else errors["key"] = { msg : "This value has to be an array." }
+								else errors[key] = { msg : "This value has to be an array." }
 							break;
 						case "any":
 							go++;
