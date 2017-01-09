@@ -10,15 +10,15 @@ module.exports = {
 
 		Keys.findOne({key:req.headers["key"]}).exec(function(err, found){
 			if(err) return res.send(200, Response.failure(err))
-			if(!found) return res.send(200, Response.failure("That was an invalid key."))
+			if(!found) return res.send(200, Response.failure({msg:"That was an invalid key.", code:5000}))
 
 			// ENABLE THIS LATER
 			// if(Date.now() > Number(found.exp_time)) return res.send(200, Response.failure("This key has expired and is no longer valid."))
 
 			Accounts.findOne({id:found.account_id}).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
-				if(!found) return res.send(200, Response.failure("There was no account found for this key."))
-				if(found.active == 0) return res.send(200, Response.failure("This account has been disabled."))
+				if(!found) return res.send(200, Response.failure({msg:"There was no account found for this key.", code:5000}))
+				if(found.active == 0) return res.send(200, Response.failure({msg:"This account has been disabled.", code:5000}))
 
 				return res.send(200, Response.success({
 					msg : "Valid key.",
@@ -34,12 +34,12 @@ module.exports = {
 
 		Keys.findOne({key:req.headers["key"]}).exec(function(err, found){
 			if(err) return res.send(200, Response.failure(err))
-			if(!found) return res.send(200, Response.failure("That was an invalid key."))
+			if(!found) return res.send(200, Response.failure({msg:"That was an invalid key.", code:5000}))
 				
 			Accounts.findOne({id:found.account_id}).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
-				if(!found) return res.send(200, Response.failure("There was no account found for this key."))
-				if(found.active == 0) return res.send(200, Response.failure("This account has been disabled."))
+				if(!found) return res.send(200, Response.failure({msg: "There was no account found for this key.", code:5000} ))
+				if(found.active == 0) return res.send(200, Response.failure({msg:"This account has been disabled.", code:5000}))
 
 				var new_key = Token.auth_key(found.id);
 				var new_time = Token.expiration();
