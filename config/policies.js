@@ -36,8 +36,8 @@ module.exports.policies = {
     },
   'FacebookController':{
     register : ["baseAuth","facebookAuth"],
-    login : true,
-    test : true,
+    login : ["facebookAuth"],
+    test : ["facebookAuth"],
     extend : ["baseAuth","facebookAuth"]
     }
 

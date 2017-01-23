@@ -41,6 +41,9 @@ module.exports = {
       facebook : {
         type : 'string'
         },
+      facebook_at : {
+        type : 'string'
+        },
       linkedin : {
         type : 'string'
         },

@@ -13,150 +13,154 @@ module.exports = {
 			return res.send(200, fbres)
 			})
 
-
 		},
 	register : function(req, res){
 		var data = {
-			user_name : { v:'string' },
+			email : { v:'email', b:true },
 			phone : { v:'phone' },
-			code : { v:'string' }
+			code : { v:'string' },
+			first_name : { v:'string' },
+			middle_name : { v:'string', b:true },
+			last_name : { v:'string' },
+			user_name : { v:'string' },
 			}
 
 		data = Validator.run(data,req.body);
 		if(data.failure) return res.send(200, data);
 
 		if(data.email) data.email_token = Token.generate();
+		
+		var code = data.code;
+		delete data.code
 
-		Tokens.findOne({ data : data.phone , token : data.code }).exec(function(err, found){
-			if(err) return res.send(200, Response.failure(err))
-			if(!found && data.code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
+		// making small changes
 
-			// check expiration
-			if(data.code != "TEST" && Date.now() > Number(found.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
+		co(function*(){
 
-			fb.api('/me' , { fields : ['id','first_name','last_name','email','birthday','gender','hometown','age_range','interested_in'] } , function(fbres){
+			var token = yield Tokens.findOne({ data: data.phone, token : data.code })
+			if(!token && code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
+
+			if(code != "TEST" && Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
+
+			var account = yield Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name}]})
+			if(account){
+				if(account.phone == data.phone) return res.send(200, Response.failure("This phone number has already been registered."))
+				if(account.user_name == data.user_name) return res.send(200, Response.failure("This user name has already been registered."))
+				}
+
+			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
-				
-				Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name} , { facebook:fbres.id }]}).exec(function(err,ufound){
-					if(err) return res.send(200, Response.failure("There seems to have been an issue finding this user."))
-					if(ufound) {
-						
-						if(ufound.facebook) return res.send(200, Response.failure("This user has already been registered using Facebook."))
-						if(ufound.user_name == data.user_name) return res.send(200, Response.failure("This username has already been used before."))
-						return res.send(200, Response.failure("This user has already been registered."))
-						}
 
-					data.first_name = (fbres.first_name?fbres.first_name:"Unknown")
-					data.middle_name = (fbres.middle_name?fbres.middle_name:"Unknown")
-					data.last_name = (fbres.last_name?fbres.last_name:"Unknown")
-					data.facebook = fbres.id
-					
-					if(fbres.email){
-						data.email = fbres.email
-						data.email_token = Token.generate()
-						}
-
-					var code = data.code
-					delete data.code
+				data.facebook = fbres.id
 
 
-					Accounts.create(data).exec(function(err,created){
-						if(err) return res.send(200, Response.failure(err))
-						if(data.email){
-							// Send.email({
-							// 	to: data.email,
-							// 	subject: 'Welcome to Peoplr',
-							// 	text: 'Please check the following link to verify:',
-							// 	html: '<a href="https://accounts.peoplr.tech/verify/email?id=' + created.id + '&token=' + data.email_token + '"> Verify </a>'
-							// 	})
-							}
+				fb.api('/oauth/access_token', { client_id : fb_client_id, client_secret : fb_client_secret, grant_type : 'fb_exchange_token' , fb_exchange_token : req.fb_at }  , function(fbres_et){
+
+					if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
+
+					co(function*(){
+
+						data.facebook_at = fbres_et.access_token
+						account = yield Accounts.create(data)
 
 						if(code != "TEST"){
-							Tokens.destroy({id:found.id}).exec(function(err){
-								if(err) console.log("The token with an id of "+found.id+" was not deleted.")
+							Tokens.destroy({id:token.id}).exec(function(err){
+								if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 								})
 							}
 
-						Keys.create({
-							account_id : created.id,
-							key : Token.auth_key(created.id),
+						var key = yield Keys.create({
+							account_id : account.id,
+							key : Token.auth_key(account.id),
 							exp_time : Token.expiration(),
 							user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
 							ip_address : Utils.ip(req.ip)
-							}).exec(function(err, created_key){
-								if(err) return res.send(200, Response.failure(err))
+							})
 
-								return res.send(200, Response.success({
-									msg : "User registered and logged in.",
-									data : {
-										auth_id : created.id,
-										fb_id : fbres.id,
-										auth_key : created_key.key,
-										exp_time : created_key.exp_time,
-										access_token : fb_access_token
-										}
-									}))
-								})
-						})
+						if(!key) return res.send(200,Response.failure("Authorization could not occur."))
+
+
+						return res.send(200, Response.success({
+							msg : "Facebook registered and logged in.",
+							data : {
+								auth_first_name : account.first_name,
+								auth_last_name : account.last_name,
+								auth_name : account.first_name + " " + account.last_name,
+								auth_user_name : account.user_name,
+								auth_phone : account.phone,
+								auth_email : account.email,
+								auth_id : account.id,
+								auth_key : key.key,
+								exp_time : key.exp_time,
+								fb_id : account.facebook,
+								fb_at : fbres_et.access_token
+								}
+							}))	
+			
+						}).catch(err => res.send(200,Response.failure(err)))
 					})
 				})
-			})
+			}).catch(err => res.send(200,Response.failure(err)))
+
 		},
 	login : function(req,res){
-		var data = {
-			code : { v:'string' }
-			}
-		
-		data = Validator.run(data,req.query)
-		if(data.failure) return res.send(200,data);
 
-		fb.api('/oauth/access_token', { client_id : fb_client_id, client_secret : fb_client_secret, code : data.code , redirect_uri : "http://test.peoplr.tech:1337/facebook/login" }  , function(fbres_token){
+		fb.api('/me' , { fields : ['id','first_name','last_name','email','birthday','gender','hometown','age_range','interested_in'] } , function(fbres){
 
-			if(!fbres_token || fbres_token.error) return res.send(200, Response.failure("This was not a valid access token."))
+			if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
+
+			fb.api('/oauth/access_token', { client_id : fb_client_id, client_secret : fb_client_secret, grant_type : 'fb_exchange_token' , fb_exchange_token : req.fb_at }  , function(fbres_et){
+
+				if(!fbres_et || fbres_et.error) return res.send(200, Response.failure("This was not a valid access token."))
+
+				console.log(fbres_et)
 
 
-			fb.setAccessToken(fbres_token.access_token);
+				co(function*(){
 
-			fb.api('/me', function(fbres){
-				
-				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
+					var account = yield Accounts.findOne({facebook : fbres.id})
+					if(!account) return res.send(200, Response.success({msg:"Please register user.", data : {
+						first_name : fbres.first_name,
+						last_name : fbres.last_name,
+						email : fbres.email
+						}, code : 2000}))
 
-				Accounts.findOne({facebook : fbres.id}).exec(function(err,found){
-					if(err) return res.send(200, Response.failure("There seems to have been an issue with finding this user."))
-					
-					if(!found) return res.send(200, Response.success({
-						msg : "Token valid, user needs to be registered.",
+
+					// update the access token
+					var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token })
+					if(!account_update) return res.send(200, Response.failure("We couldn't update the tokens."))
+
+
+					var key = yield Keys.create({
+							account_id : account.id,
+							key : Token.auth_key(account.id),
+							exp_time : Token.expiration(),
+							user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
+							ip_address : Utils.ip(req.ip)
+							})
+					if(!key) return res.send(200, Response.failure("There was an error processing this request."))
+
+					return res.send(200, Response.success({
+						msg : "Valid Facebook login.",
 						data : {
-							registered : false,
-							fb_id : fbres.id,
-							name : fbres.name,
-							access_token : fbres_token.access_token
+							auth_first_name : account.first_name,
+							auth_last_name : account.last_name,
+							auth_name : account.first_name + " " + account.last_name,
+							auth_user_name : account.user_name,
+							auth_phone : account.phone,
+							auth_email : account.email,
+							auth_id : account.id,
+							auth_key : key.key,
+							exp_time : key.exp_time,
+							fb_id : account.facebook,
+							fb_at : fbres_et.access_token
 							}
 						}))
 
-					Keys.create({
-						account_id : found.id,
-						key : Token.auth_key(found.id),
-						exp_time : Token.expiration(),
-						user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-						ip_address : Utils.ip(req.ip)
-						}).exec(function(err, created){
-							if(err) return res.send(200, Response.failure(err))
-
-							return res.send(200, Response.success({
-								msg : "Valid Facebook login.",
-								data : {
-									auth_id : found.id,
-									fb_id : found.facebook,
-									auth_key : created.key,
-									exp_time : created.exp_time,
-									access_token : fbres.access_token
-									}
-								}))
-							})
-					})
-				})			
+					}).catch(err => res.send(200,Response.failure(err)))
+				})
 			})
+		
 		},
 	extend : function(req,res){
 
@@ -166,16 +170,6 @@ module.exports = {
 
 			return res.send(200, Response.success("Token extended successfully."))
 			})
-		},
-	logout : function(req, res){
-
-		Keys.destroy({key:req.auth.key}).exec(function(err, destroyed){
-			if(err) return res.send(200, Response.failure(err))
-			return res.send(200, Response.success("Logout successful."))
-			})
-		
-		
-
 		}
 	};
 

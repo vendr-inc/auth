@@ -19,6 +19,10 @@ module.exports.bootstrap = function(cb) {
   	global.co = require('co');
 	global.request = require('request');
 	global.q = require("q");
+	
+	global.fb = require('fb')
+	global.fb_client_id = "153181341813266"
+	global.fb_client_secret  = "5ff377ffe9b39dcd5f5f528509c91495"
 
 	global.lhost = "localhost"
 

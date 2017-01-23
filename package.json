@@ -28,7 +28,8 @@
     "redis":"*",
     "co-try-catch":"*",
     "twilio":"*",
-    "nodemailer":"*"
+    "nodemailer":"*",
+    "fb":"*"
   },
   "scripts": {
     "debug": "node debug app.js",
