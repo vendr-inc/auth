@@ -62,12 +62,30 @@ module.exports = {
 							})
 						}
 
-					return res.send(200, Response.success({
-						msg : "Account created.",
-						data : {
-							auth_id : created.id
-							}
-						}))
+					Keys.create({
+						account_id : created.id,
+						key : Token.auth_key(created.id),
+						exp_time : Token.expiration(),
+						user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
+						ip_address : Utils.ip(req.ip)
+						}).exec(function(err, key){
+							if(err) return res.send(200, Response.failure(err))
+							return res.send(200, Response.success({
+								msg : "User registered and logged in.",
+								data : {
+									auth_first_name : created.first_name,
+									auth_last_name : created.last_name,
+									auth_name : created.first_name + " " + created.last_name,
+									auth_user_name : created.user_name,
+									auth_phone : created.phone,
+									auth_email : created.email,
+									auth_id : key.id,
+									auth_key : key.key,
+									exp_time : key.exp_time
+									}
+								}))
+							})
+
 					})
 				})
 			})
