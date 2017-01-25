@@ -68,7 +68,10 @@ module.exports = {
 							break;
 						case "boolean":
 							if(typeof tbtested != "boolean"){
-								errors[key] = { msg : "This value must be a boolean." }
+
+								if(tbtested == "false"){ tbtested = false; go++}
+								else if(tbtested == "true"){ tbtested = true; go++ }
+								else errors[key] = { msg : "This value must be a boolean." }
 								}
 							else go++
 							break;
