@@ -30,7 +30,7 @@ module.exports = {
 				client.messages.create({
 					to : data.phone,
 					from : "+14152149780",
-					body : "Your Peoplr code is: " + token + ". Please use this code within 5 minutes to continue login."
+					body : "Your Vendr code is: " + token + ". Please use this code within 5 minutes to register your account successfully."
 					} , function(err, msg){
 						console.log(err)
 						if(err) return res.send(200, Response.failure("The code could not be sent."))

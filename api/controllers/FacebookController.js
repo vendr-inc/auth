@@ -37,7 +37,7 @@ module.exports = {
 
 		co(function*(){
 
-			var token = yield Tokens.findOne({ data: data.phone, token : data.code })
+			var token = yield Tokens.findOne({ data: data.phone, token : code })
 			if(!token && code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
 
 			if(code != "TEST" && Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
