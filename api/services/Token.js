@@ -34,7 +34,7 @@ module.exports = {
 		},
 	expiration : function(type){
 		// var EXP_TIME_WEB = 1800000;
-		var EXP_TIME_MOB = 2592000000;
+		var EXP_TIME_MOB = Date.now() + 2592000000;
 
 		return EXP_TIME_MOB
 
