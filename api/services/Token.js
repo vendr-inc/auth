@@ -33,11 +33,13 @@ module.exports = {
 		return c.createHash('md5').update(str_to_hash).digest('hex').toString("base64");
 		},
 	expiration : function(type){
-		var EXP_TIME_WEB = 1800000;
-		var EXP_TIME_MOB = 1209600000;
+		// var EXP_TIME_WEB = 1800000;
+		var EXP_TIME_MOB = 2592000000;
 
-    	var t = Date.now();
-    	if (type === 'MOB') return t + EXP_TIME_MOB
-        return t + EXP_TIME_WEB;
+		return EXP_TIME_MOB
+
+  //   	var t = Date.now();
+  //   	if (type === 'MOB') return t + EXP_TIME_MOB
+  //       return t + EXP_TIME_WEB;
 		}
 	}
