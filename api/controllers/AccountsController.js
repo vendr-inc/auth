@@ -24,7 +24,7 @@ module.exports = {
 			var update = yield Accounts.update({ id: req.active_account.id } , { phone : data.phone })
 			if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
 
-			if(code != "TEST"){
+			if(data.code != "TEST"){
 				Tokens.destroy({id:token.id}).exec(function(err){
 					if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 					})
