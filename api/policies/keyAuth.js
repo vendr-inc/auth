@@ -9,7 +9,7 @@ module.exports = function(req, res, next) {
 		if(err) return res.send(200, Response.failure(err))
 		if(!found) return res.send(200, Response.failure({msg:"That was an invalid key.", code:5000}))
 
-		if(Date.now() > Number(found.exp_time)) return res.send(200, Response.failure("This key has expired and is no longer valid."))
+		if(Date.now() > Number(found.exp_time)) return res.send(200, Response.failure({msg:"This key has expired and is no longer valid." , code:5100}))
 
 		Accounts.findOne({id:found.account_id}).exec(function(err, found){
 			if(err) return res.send(200, Response.failure(err))
