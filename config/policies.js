@@ -28,6 +28,7 @@ module.exports.policies = {
 
   '*': ["baseAuth","keyAuth"],
   'InternalController' : {
+    "check/username" : "baseAuth",
     register : "baseAuth",
     login : "baseAuth"
     },
