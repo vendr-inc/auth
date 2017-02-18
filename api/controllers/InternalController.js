@@ -6,6 +6,25 @@
  */
 
 module.exports = {
+	"check/username" : function(){
+		var data = {
+			user_name : { v:'string' }
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+		co(function*(){
+
+			var check_username = yield Accounts.findOne({ user_name : data.user_name })
+			if(check_username) return res.send(200, Response.failure("This user name has already been registered."))
+
+			return res.send(200, Response.success("Valid."))	
+
+
+			}).catch(err => res.send(200,Response.failure(err)))
+
+		},
 	register : function(req, res){
 		var data = {
 			email : { v:'email', b:true },
