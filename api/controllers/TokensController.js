@@ -18,6 +18,9 @@ module.exports = {
 		Accounts.findOne({phone:data.phone}).exec(function(err,found){
 
 			if(err) return res.send(200, Response.failure(err))
+
+			console.log(found)
+
 			if(found) return res.send(200, Response.failure("This phone number has already been registered."))
 
 			Tokens.findOne({ data : data.phone , type : "phone/send" }).exec(function(err, found){

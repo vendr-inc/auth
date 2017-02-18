@@ -29,66 +29,54 @@ module.exports = {
 
 		// making small change
 
+		co(function*(){
 
-		Tokens.findOne({ data : data.phone , token : code }).exec(function(err, found){
-			if(err) return res.send(200, Response.failure(err))
-			if(!found && code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
+			var token = yield Tokens.findOne({ data: data.phone, token : code })
+			if(!token) return res.send(200, Response.failure("This is not a valid code."))
 
-			// check expiration
-			if(code != "TEST" && Date.now() > Number(found.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
-			
-			Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name}]}).exec(function(err,ufound){
+			if(Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
 
-				if(err) return res.send(200, Response.failure(err))
-				if(ufound){
-					if(ufound.phone == data.phone) return res.send(200, Response.failure("This phone number has already been registered."))
-					if(ufound.user_name == data.user_name) return res.send(200, Response.failure("This user name has already been registered."))
-					}
-				
-				Accounts.create(data).exec(function(err,created){
-					if(err) return res.send(200, Response.failure(err))
-					if(data.email){
-						// Send.email({
-						// 	to: data.email,
-						// 	subject: 'Welcome to Sellyx',
-						// 	text: 'Please check the following link to verify:',
-						// 	html: '<a href="https://accounts.peoplr.tech/verify/email?id=' + created.id + '&token=' + data.email_token + '"> Verify </a>'
-						// 	})
-						}
+			var check_username = yield Accounts.findOne({ user_name : data.user_name })
+			if(check_username) return res.send(200, Response.failure("This user name has already been registered."))
 
-					if(code != "TEST"){
-						Tokens.destroy({id:found.id}).exec(function(err){
-							if(err) console.log("The token with an id of "+found.id+" was not deleted.")
-							})
-						}
+			var check_phone = yield Accounts.findOne({ phone : data.phone })
+			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
 
-					Keys.create({
-						account_id : created.id,
-						key : Token.auth_key(created.id),
-						exp_time : Token.expiration(),
-						user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-						ip_address : Utils.ip(req.ip)
-						}).exec(function(err, key){
-							if(err) return res.send(200, Response.failure(err))
-							return res.send(200, Response.success({
-								msg : "User registered and logged in.",
-								data : {
-									auth_first_name : created.first_name,
-									auth_last_name : created.last_name,
-									auth_name : created.first_name + " " + created.last_name,
-									auth_user_name : created.user_name,
-									auth_phone : created.phone,
-									auth_email : created.email,
-									auth_id : key.id,
-									auth_key : key.key,
-									exp_time : key.exp_time
-									}
-								}))
-							})
+			var account = yield Accounts.create(data)
 
-					})
+			Tokens.destroy({id:token.id}).exec(function(err){
+				if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 				})
-			})
+				
+
+			var key = yield Keys.create({
+				account_id : account.id,
+				key : Token.auth_key(account.id),
+				exp_time : Token.expiration(),
+				user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
+				ip_address : Utils.ip(req.ip)
+				})
+
+			if(!key) return res.send(200,Response.failure("Authorization could not occur."))
+
+
+			return res.send(200, Response.success({
+				msg : "Facebook registered and logged in.",
+				data : {
+					auth_first_name : account.first_name,
+					auth_last_name : account.last_name,
+					auth_name : account.first_name + " " + account.last_name,
+					auth_user_name : account.user_name,
+					auth_phone : account.phone,
+					auth_email : account.email,
+					auth_id : account.id,
+					auth_key : key.key,
+					exp_time : key.exp_time
+					}
+				}))	
+
+
+			}).catch(err => res.send(200,Response.failure(err)))
 		},
 	login : function(req, res){
 		var data = {

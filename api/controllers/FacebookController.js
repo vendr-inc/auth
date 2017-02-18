@@ -38,15 +38,15 @@ module.exports = {
 		co(function*(){
 
 			var token = yield Tokens.findOne({ data: data.phone, token : code })
-			if(!token && code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
+			if(!token) return res.send(200, Response.failure("This is not a valid code."))
 
-			if(code != "TEST" && Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
+			if(Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
 
-			var account = yield Accounts.findOne({$or:[{phone:data.phone}, {user_name : data.user_name}]})
-			if(account){
-				if(account.phone == data.phone) return res.send(200, Response.failure("This phone number has already been registered."))
-				if(account.user_name == data.user_name) return res.send(200, Response.failure("This user name has already been registered."))
-				}
+			var check_username = yield Accounts.findOne({ user_name : data.user_name })
+			if(check_username) return res.send(200, Response.failure("This user name has already been registered."))
+
+			var check_phone = yield Accounts.findOne({ phone : data.phone })
+			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
 
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
@@ -61,13 +61,12 @@ module.exports = {
 					co(function*(){
 
 						data.facebook_at = fbres_et.access_token
-						account = yield Accounts.create(data)
+						var account = yield Accounts.create(data)
 
-						if(code != "TEST"){
-							Tokens.destroy({id:token.id}).exec(function(err){
-								if(err) console.log("The token with an id of "+token.id+" was not deleted.")
-								})
-							}
+						Tokens.destroy({id:token.id}).exec(function(err){
+							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
+							})
+							
 
 						var key = yield Keys.create({
 							account_id : account.id,
