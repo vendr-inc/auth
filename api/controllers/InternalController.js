@@ -37,6 +37,9 @@ module.exports = {
 			if(Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
 
 			var check_username = yield Accounts.findOne({ user_name : data.user_name })
+
+			console.log(check_username)
+
 			if(check_username) return res.send(200, Response.failure("This user name has already been registered."))
 
 			var check_phone = yield Accounts.findOne({ phone : data.phone })

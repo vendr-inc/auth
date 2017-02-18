@@ -17,9 +17,11 @@ module.exports = {
 
 		Accounts.findOne({phone:data.phone}).exec(function(err,found){
 
+			console.log(err)
+			console.log(found)
+
 			if(err) return res.send(200, Response.failure(err))
 
-			console.log(found)
 
 			if(found) return res.send(200, Response.failure("This phone number has already been registered."))
 
