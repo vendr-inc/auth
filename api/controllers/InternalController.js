@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	"check/username" : function(){
+	"check/username" : function(req, res){
 		var data = {
 			user_name : { v:'string' }
 			}
