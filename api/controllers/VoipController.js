@@ -20,7 +20,7 @@ module.exports = {
 	
 		client.calls.create({
 		    url: "http://demo.twilio.com/docs/voice.xml",
-		    to: "+" data.phone,
+		    to: "+" + data.phone,
 		    from: "+13103128690"
 			}, 
 
