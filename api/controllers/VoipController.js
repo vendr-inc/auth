@@ -25,6 +25,11 @@ module.exports = {
 			}, 
 
 		function(err, call) {
+
+			if(err) return res.send(200, Response.failure("Outgoing number not valid."))
+
+			return res.send(200, Response.success("Call placed"))
+
 			console.log(err)
 			console.log(call)
 
