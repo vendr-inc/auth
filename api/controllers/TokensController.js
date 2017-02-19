@@ -30,11 +30,11 @@ module.exports = {
 				
 				var token = Math.floor(Math.random() * 9000) + 1000
 
-				var client = require('twilio')("ACdd27abf6914ae131ad2248a529eff4aa", "9e2f645e33b1ac624a84deea89cebcc6")
+				var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
 
 				client.messages.create({
 					to : data.phone,
-					from : "+14152149780",
+					from : "+13103128690",
 					body : "Your Vendr code is: " + token + ". Please use this code within 5 minutes to register your account successfully."
 					} , function(err, msg){
 						console.log(err)
