@@ -41,7 +41,7 @@ module.exports.policies = {
     test : ["facebookAuth"],
     extend : ["baseAuth","facebookAuth"]
     },
-    'VoipController' : "baseAuth"
+    'VoipController' : "*"
 
   /***************************************************************************
   *                                                                          *
