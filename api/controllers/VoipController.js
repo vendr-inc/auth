@@ -17,6 +17,10 @@ module.exports = {
 			}, 
 
 		function(err, call) {
+			console.log(err)
+			console.log(call)
+
+
 		    process.stdout.write(call.sid);
 			});
 		}
