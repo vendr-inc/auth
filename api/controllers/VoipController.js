@@ -37,6 +37,18 @@ module.exports = {
 		    process.stdout.write(call.sid);
 			});
 		},
+	incoming : function(req, res){
+
+		var twilio = require('twilio');
+
+		var twiml = new twilio.TwimlResponse();
+		twiml.say("Hello from your pals at Twilio! Have fun.");
+
+		res.setHeader("content-type", "text/xml")
+
+		res.send(200, twiml.toString())
+
+		},
 	token : function(req, res){
 		var AccessToken = require('twilio').AccessToken;
 		var IpMessagingGrant = AccessToken.VoiceGrant;
@@ -73,7 +85,29 @@ module.exports = {
 		return res.send(200,Response.success(token.toJwt()))
 		},
 	masked : function(req, res){
+		var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
 
+		var purchase = function (areaCode) {
+		var phoneNumber;
+
+		return client.availablePhoneNumbers('US').local.get({
+			areaCode: areaCode,
+			voiceEnabled: true,
+			smsEnabled: true
+			}).then(function(searchResults) {
+				if (searchResults.availablePhoneNumbers.length === 0) {
+				throw { message: 'No numbers found with that area code' };
+				}
+
+		return client.incomingPhoneNumbers.create({
+			phoneNumber: searchResults.availablePhoneNumbers[0].phoneNumber,
+			voiceApplicationSid: "APd815d05ada1d681bbbc8b1fe26bd196f",
+			smsApplicationSid: "APd815d05ada1d681bbbc8b1fe26bd196f"
+			});
+			}).then(function(number) {
+				return number.phone_number;
+				});
+			}
 
 		}
 
