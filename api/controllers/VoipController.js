@@ -8,11 +8,19 @@
 module.exports = {
 	
 	outgoing : function(req,res){
+		var data = {
+			phone : { v:'phone' },
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+
 		var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
 	
 		client.calls.create({
 		    url: "http://demo.twilio.com/docs/voice.xml",
-		    to: "+18054037831",
+		    to: "+" data.phone,
 		    from: "+13103128690"
 			}, 
 
@@ -58,6 +66,10 @@ module.exports = {
 
 
 		return res.send(200,Response.success(token.toJwt()))
+		},
+	masked : function(req, res){
+
+
 		}
 
 	};
