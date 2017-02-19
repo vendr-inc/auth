@@ -54,6 +54,9 @@ module.exports = {
 
 		},
 	token : function(req, res){
+
+		console.log("incoming")
+
 		var AccessToken = require('twilio').AccessToken;
 		var IpMessagingGrant = AccessToken.IpMessagingGrant;
 
