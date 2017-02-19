@@ -44,6 +44,8 @@ module.exports = {
 		var twiml = new twilio.TwimlResponse();
 		twiml.say("Hello from your pals at Twilio! Have fun.");
 
+		resp.dial("+18054037831")
+
 		res.setHeader("content-type", "text/xml")
 
 		res.send(200, twiml.toString())
