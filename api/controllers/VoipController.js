@@ -55,7 +55,7 @@ module.exports = {
 		},
 	token : function(req, res){
 		var AccessToken = require('twilio').AccessToken;
-		var IpMessagingGrant = AccessToken.VoiceGrant;
+		var IpMessagingGrant = AccessToken.IpMessagingGrant;
 
 		// Used when generating any kind of tokens
 		var twilioAccountSid = 'ACf2a6b1837b585b0a10259694beb74174';
@@ -71,7 +71,7 @@ module.exports = {
 
 		// Create a "grant" which enables a client to use IPM as a given user,
 		// on a given device
-		var ipmGrant = new VoiceGrant({
+		var ipmGrant = new IpMessagingGrant({
 		    serviceSid: serviceSid,
 		    endpointId: endpointId
 			});
@@ -86,7 +86,7 @@ module.exports = {
 		console.log(token.toJwt());
 
 
-		return res.send(200,Response.success(token.toJwt()))
+		return res.send(200,token.toJwt())
 		},
 	masked : function(req, res){
 		var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
