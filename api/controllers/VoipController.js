@@ -39,8 +39,8 @@ module.exports = {
 		},
 	incoming : function(req, res){
 
-		var twilio = require('twilio');
-
+		var twilio = require('twilio')
+		
 		var twiml = new twilio.TwimlResponse();
 		twiml.say("Hello from your pals at Twilio! Have fun.");
 
