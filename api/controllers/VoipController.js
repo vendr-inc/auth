@@ -8,6 +8,9 @@
 module.exports = {
 	
 	outgoing : function(req,res){
+
+		console.log("outgoing calls being connected")
+
 		var data = {
 			phone : { v:'phone' },
 			}
