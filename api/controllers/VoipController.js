@@ -49,7 +49,7 @@ module.exports = {
 		var twiml = new twilio.TwimlResponse();
 		twiml.say("Welcome to Vendr! We are connecting your call.");
 
-		twiml.dial("+18054037831")
+		twiml.dial("+18054037831", {callerId: "+13103128690" })
 
 		res.setHeader("content-type", "text/xml")
 
