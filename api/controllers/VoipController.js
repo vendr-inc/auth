@@ -61,7 +61,7 @@ module.exports = {
 		console.log("incoming")
 
 		var AccessToken = require('twilio').AccessToken;
-		var IpMessagingGrant = AccessToken.VoiceGrant;
+		var vgrant = AccessToken.VoiceGrant;
 
 		// Used when generating any kind of tokens
 		var twilioAccountSid = 'ACf2a6b1837b585b0a10259694beb74174';
@@ -77,7 +77,7 @@ module.exports = {
 
 		// Create a "grant" which enables a client to use IPM as a given user,
 		// on a given device
-		var ipmGrant = new VoiceGrant({
+		var ipmGrant = new vgrant({
 		    outgoingApplicationSid: serviceSid,
 		    pushCredentialSid: endpointId
 			});
