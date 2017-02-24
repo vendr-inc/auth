@@ -70,10 +70,6 @@ module.exports = {
 
 		// Used specifically for creating IP Messaging tokens
 		var serviceSid = 'APd815d05ada1d681bbbc8b1fe26bd196f';
-		var appName = 'Vendr Inc.';
-		var identity = 'aamir@vendr.tech';
-		var deviceId = 'someiosdeviceid';
-		var endpointId = appName + ':' + identity + ':' + deviceId;
 
 		// Create a "grant" which enables a client to use IPM as a given user,
 		// on a given device
