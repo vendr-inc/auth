@@ -127,12 +127,12 @@ module.exports.sockets = {
   * disconnects                                                              *
   *                                                                          *
   ***************************************************************************/
-  afterDisconnect: function(session, socket, cb) {
+  // afterDisconnect: function(session, socket, cb) {
 
-    console.log("user disconnected")
-    // By default: do nothing.
-    return cb();
-  },
+  //   console.log("user disconnected")
+  //   // By default: do nothing.
+  //   return cb();
+  // },
 
   /***************************************************************************
   *                                                                          *

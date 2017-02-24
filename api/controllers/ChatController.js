@@ -9,7 +9,7 @@ module.exports = {
 	
 	connect : function(req, res){
 
-		sails.sockets.broadcast('message', { greeting: 'Hola!' });
+		sails.sockets.blast('message', { greeting: 'Hola!' });
 
 
 		},
