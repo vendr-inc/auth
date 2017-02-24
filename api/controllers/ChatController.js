@@ -9,7 +9,7 @@ module.exports = {
 	
 	connect : function(req, res){
 
-		
+		console.log(sails.sockets.id(req.socket))
 
 		}
 
