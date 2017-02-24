@@ -9,7 +9,9 @@ module.exports = {
 	
 	connect : function(req, res){
 
-		sails.sockets.blast('message', { greeting: 'Hola!' });
+		console.log(req.active_account.id)
+
+		sails.sockets.blast('message', { "message"  : req.body.message });
 
 
 		},
