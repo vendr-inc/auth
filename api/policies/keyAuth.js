@@ -1,6 +1,10 @@
 
 module.exports = function(req, res, next) {
 
+	console.log(req.headers)
+	console.log(req.body)
+
+
 	if(!req.headers["key"]) return res.send(200, Response.failure({msg:"No authorization key was provided.", code:5000}))
 
 	// copied validate code for now from KeysController
