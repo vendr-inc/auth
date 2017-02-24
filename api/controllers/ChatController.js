@@ -9,6 +9,7 @@ module.exports = {
 	
 	connect : function(req, res){
 
+		console.log("here")
 
 		// User.subscribe(req.socket, req.active_account.id)
 
