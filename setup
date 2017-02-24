@@ -46,3 +46,7 @@ mongo as service
 
 
 https://code.tutsplus.com/tutorials/setting-up-continuous-integration-continuous-deployment-with-jenkins--cms-21511
+
+
+TO COPY FILES BETWEEN SERVERS (SUCH AS KEYS TO NEW SERVER)
+scp -i mykey.pem somefile.txt root@my.ec2.id.amazonaws.com:/

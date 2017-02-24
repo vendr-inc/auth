@@ -128,6 +128,8 @@ module.exports.sockets = {
   *                                                                          *
   ***************************************************************************/
   afterDisconnect: function(session, socket, cb) {
+
+    console.log("user disconnected")
     // By default: do nothing.
     return cb();
   },
