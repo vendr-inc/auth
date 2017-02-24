@@ -110,7 +110,7 @@ module.exports.sockets = {
 
     console.log("starting the socket connectino")
 
-    console.log(sails.sockets.id(req.socket))
+    // console.log(sails.sockets.id(req.socket))
 
     // `true` allows the connection
     return cb(null, true);
