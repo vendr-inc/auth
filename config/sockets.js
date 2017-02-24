@@ -122,7 +122,7 @@ module.exports.sockets = {
   onConnect : function( session, socket){
 
 
-    sails.socket.on('message', function(data, fn){
+    sails.sockets.on('message', function(data, fn){
 
       console.log(data)
 
