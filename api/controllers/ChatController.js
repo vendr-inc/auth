@@ -10,7 +10,7 @@ module.exports = {
 	connect : function(req, res){
 
 
-		User.subscribe(req.socket, req.active_account.id)
+		// User.subscribe(req.socket, req.active_account.id)
 
 
 		}

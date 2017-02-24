@@ -119,18 +119,6 @@ module.exports.sockets = {
     // (`false` would reject the connection)
     },
 
-  onConnect : function( session, socket){
-
-
-    sails.sockets.on('message', function(data, fn){
-
-      console.log(data)
-
-      })
-
-
-    },
-
   /***************************************************************************
   *                                                                          *
   * `afterDisconnect`                                                        *
