@@ -10,7 +10,7 @@ module.exports = {
 	connect : function(req, res){
 
 		console.log(req.active_account.id)
-		consoel.log(sails.sockets)
+		console.log(sails.sockets)
 
 		sails.sockets.blast('message', { "message"  : req.body.message });
 
