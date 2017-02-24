@@ -9,7 +9,9 @@ module.exports = {
 	
 	connect : function(req, res){
 
-		console.log(sails.sockets.id(req.socket))
+
+		User.subscribe(req.socket, req.active_account.id)
+
 
 		}
 
