@@ -43,6 +43,7 @@ module.exports.policies = {
     },
     'VoipController' : "allAuth",
     'VideoController' : "allAuth"
+    // 'ChatController' : "socketAuth"
 
   /***************************************************************************
   *                                                                          *
