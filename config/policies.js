@@ -42,8 +42,7 @@ module.exports.policies = {
     extend : ["baseAuth","facebookAuth"]
     },
     'VoipController' : "allAuth",
-    'VideoController' : "allAuth",
-    'ChatController' : "socketAuth"
+    'VideoController' : "allAuth"
 
   /***************************************************************************
   *                                                                          *
