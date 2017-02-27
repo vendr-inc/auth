@@ -23,12 +23,15 @@ module.exports = {
 	
 		client.calls.create({
 		    url: "http://demo.twilio.com/docs/voice.xml",
-		    to: "+18054037831",
+		    to: "Aamir",
 		    // to: "+" + data.phone,
-		    from: "+13103128690"
+		    from: "Vendr"
 			}, 
 
 		function(err, call) {
+
+			console.log(err)
+			console.log(call)
 
 			if(err) return res.send(200, Response.failure("Outgoing number not valid."))
 
