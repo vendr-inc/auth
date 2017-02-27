@@ -23,9 +23,9 @@ module.exports = {
 	
 		client.calls.create({
 		    url: "http://demo.twilio.com/docs/voice.xml",
-		    to: "Aamir",
+		    to: "voice_test",
 		    // to: "+" + data.phone,
-		    from: "Vendr"
+		    from: "quick_start"
 			}, 
 
 		function(err, call) {
