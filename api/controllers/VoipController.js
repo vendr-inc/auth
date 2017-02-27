@@ -7,39 +7,41 @@
 
 module.exports = {
 	
-	// outgoing : function(req,res){
+	incoming : function(req,res){
 
-	// 	console.log("outgoing calls being connected")
+		// console.log("outgoing calls being connected")
 
-	// 	var data = {
-	// 		phone : { v:'phone' },
-	// 		}
+		// var data = {
+		// 	phone : { v:'phone' },
+		// 	}
 
-	// 	data = Validator.run(data,req.body);
-	// 	if(data.failure) return res.send(200, data);
+		// data = Validator.run(data,req.body);
+		// if(data.failure) return res.send(200, data);
 
 
-	// 	var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
+		var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
 	
-	// 	client.calls.create({
-	// 	    url: "http://demo.twilio.com/docs/voice.xml",
-	// 	    to: "+" + data.phone,
-	// 	    from: "+13103128690"
-	// 		}, 
+		client.calls.create({
+		    url: "http://demo.twilio.com/docs/voice.xml",
+		    to: "+18054037831",
+		    // to: "+" + data.phone,
+		    from: "+13103128690"
+			}, 
 
-	// 	function(err, call) {
+		function(err, call) {
 
-	// 		if(err) return res.send(200, Response.failure("Outgoing number not valid."))
+			if(err) return res.send(200, Response.failure("Outgoing number not valid."))
 
-	// 		return res.send(200, Response.success("Call placed"))
+			// return res.send(200, Response.success("Call placed"))
 
-	// 		console.log(err)
-	// 		console.log(call)
+			// console.log(err)
+			// console.log(call)
 
 
-	// 	    process.stdout.write(call.sid);
-	// 		});
-	// 	},
+		    process.stdout.write(call.sid);
+			});
+		},
+
 	outgoing : function(req, res){
 
 		console.log("here")
