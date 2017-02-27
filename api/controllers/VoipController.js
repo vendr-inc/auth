@@ -58,7 +58,7 @@ module.exports = {
 		},
 	token : function(req, res){
 
-		console.log("incoming")
+		console.log("getting token")
 
 		var AccessToken = require('twilio').AccessToken;
 		var vgrant = AccessToken.VoiceGrant;
@@ -82,7 +82,7 @@ module.exports = {
 		// containing the grant we just created
 		var token = new AccessToken(twilioAccountSid, twilioApiKey, twilioApiSecret);
 		token.addGrant(ipmGrant);
-		token.identity = identity;
+		token.identity = 'user';
 
 		// Serialize the token to a JWT string
 		console.log(token.toJwt());
