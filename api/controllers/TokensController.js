@@ -63,7 +63,7 @@ module.exports = {
 				})
 			})
 		},
-	"phone/send/forgot" : function(req, res){
+	"phone/forgot" : function(req, res){
 		var data = {
 			phone : { v:'phone' }
 			}
@@ -79,7 +79,7 @@ module.exports = {
 			if(err) return res.send(200, Response.failure(err))
 			if(!found) return res.send(200, Response.failure("This phone number was not found."))
 
-			Tokens.findOne({ data : data.phone , type : "phone/send/forgot" }).exec(function(err, found){
+			Tokens.findOne({ data : data.phone , type : "phone/forgot" }).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
 				
 				var token = Math.floor(Math.random() * 9000) + 1000
@@ -95,7 +95,7 @@ module.exports = {
 						if(err) return res.send(200, Response.failure("The code could not be sent."))
 
 						if(found){
-							Tokens.update({data:data.phone,type:"phone/send/forgot"},{
+							Tokens.update({data:data.phone,type:"phone/forgot"},{
 								exp_time : Date.now() + (60*60*5*1000),
 								token : token,
 								}).exec(function(err, created){
@@ -105,7 +105,7 @@ module.exports = {
 							}
 						else{
 							Tokens.create({
-								type : "phone/send/forgot",
+								type : "phone/forgot",
 								token : token,
 								data : data.phone,
 								exp_time : Date.now() + (60*60*5*1000),

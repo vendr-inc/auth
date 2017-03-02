@@ -25,7 +25,7 @@ module.exports = {
 			}).catch(err => res.send(200,Response.failure(err)))
 
 		},
-	"forgot/password" : function(req, res){
+	"forgot/password/check" : function(req, res){
 		var data = {
 			user_name : { v:'string' }
 			}
