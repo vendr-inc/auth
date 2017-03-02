@@ -8,8 +8,7 @@
 module.exports = {
 	"phone/send" : function(req, res){
 		var data = {
-			phone : { v:'phone' },
-			// resend : { v:'boolean' , default : false }
+			phone : { v:'phone' }
 			}
 
 		data = Validator.run(data,req.body);

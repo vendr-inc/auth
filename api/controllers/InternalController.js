@@ -25,6 +25,83 @@ module.exports = {
 			}).catch(err => res.send(200,Response.failure(err)))
 
 		},
+	"forgot/password" : function(req, res){
+		var data = {
+			user_name : { v:'string' }
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+		co(function*(){
+
+			var check_username = yield Accounts.findOne({ user_name : data.user_name })
+			if(!check_username) return res.send(200, Response.failure("That username was not found. Please check again. You may have logged in Facebook, in which case this will not work."))
+			if(check_username.facebook) return res.send(200, Response.failure("This account was registered using Facebook. Please use your Facebook account to sign in."))
+
+			// otherwise we will send back the phone number
+
+			return res.send(200, Response.success({ data : { phone : check_username.phone } }))	
+
+			}).catch(err => res.send(200,Response.failure(err)))
+
+		},
+	"forgot/password/validate" : function(req, res){
+		var data = {
+			phone : { v:'string' },
+			code : { v:'string' }
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+		co(function*(){
+
+			var token = yield Tokens.findOne({ data: data.phone, token : data.code })
+			if(!token) return res.send(200, Response.failure("This is not a valid code."))
+
+			var temp_token = Math.floor(Math.random() * 9000) + 1000
+			var b = yield Tokens.create({
+				type : "password/forgot",
+				token : temp_token,
+				data : data.phone,
+				exp_time : Date.now() + (60*60*5*1000),
+				})
+
+			return res.send(200, Response.success({ data : { token : temp_token } }))	
+
+			}).catch(err => res.send(200,Response.failure(err)))
+
+		},
+	"forgot/password/change" : function(req, res){
+		var data = {
+			token : { v:'string' },
+			new_password : { v: 'string' }
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+		co(function*(){
+
+			var token = yield Tokens.findOne({ token : data.token })
+			if(!token) return res.send(200, Response.failure("This is not a valid request."))
+
+			var account = yield Accounts.findOne({ phone : token.phone })
+			if(!account) return res.send(200, Response.failure("The account could not be found."))
+
+			var update = yield Accounts.update({ id: account.id } , { password : Token.hash(data.new_password) })
+			if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
+
+			Tokens.destroy({id:token.id}).exec(function(err){
+				if(err) console.log("The token with an id of "+token.id+" was not deleted.")
+				})
+
+			return res.send(200, Response.success("Account password changed."))	
+
+			}).catch(err => res.send(200,Response.failure(err)))
+
+		},
 	register : function(req, res){
 		var data = {
 			email : { v:'email', b:true },
