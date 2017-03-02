@@ -32,7 +32,7 @@ module.exports.policies = {
     "logout" : ["baseAuth","keyAuth"]
     },
   'TokensController' : {
-    "phone/send" : "baseAuth"
+    "*" : "baseAuth"
     },
   'FacebookController':{
     register : ["baseAuth","facebookAuth"],
