@@ -79,6 +79,8 @@ module.exports = {
 			if(err) return res.send(200, Response.failure(err))
 			if(!found) return res.send(200, Response.failure("This phone number was not found."))
 
+			if(found.facebook) return res.send(200, Response.failure("This account was registered using Facebook."))
+
 			Tokens.findOne({ data : data.phone , type : "phone/forgot" }).exec(function(err, found){
 				if(err) return res.send(200, Response.failure(err))
 				
@@ -117,6 +119,35 @@ module.exports = {
 						})
 				})
 			})
-		}
+		},
+	"phone/username" : function(req, res){
+		var data = {
+			phone : { v:'phone' }
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, data);
+
+		Accounts.findOne({phone:data.phone}).exec(function(err,found){
+
+			if(err) return res.send(200, Response.failure(err))
+			if(!found) return res.send(200, Response.failure("There is no username associated with this phone number."))
+
+			if(found.facebook) return res.send(200, Response.failure("This account was registered using Facebook."))
+
+			var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
+
+			client.messages.create({
+				to : data.phone,
+				from : "+13103128690",
+				body : "Your Vendr username is: " + found.user_name + " ."
+				} , function(err, msg){
+					console.log(err)
+					if(err) return res.send(200, Response.failure("The username could not be sent."))
+					return res.send(200, Response.success("The username was sent to the phone number provided."))
+					})
+
+			})
+		},
 	};
 
