@@ -87,7 +87,7 @@ module.exports = {
 			var token = yield Tokens.findOne({ token : data.token })
 			if(!token) return res.send(200, Response.failure("This is not a valid request."))
 
-			var account = yield Accounts.findOne({ phone : token.phone })
+			var account = yield Accounts.findOne({ phone : token.data })
 			if(!account) return res.send(200, Response.failure("The account could not be found."))
 
 			var update = yield Accounts.update({ id: account.id } , { password : Token.hash(data.new_password) })
