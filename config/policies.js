@@ -28,9 +28,8 @@ module.exports.policies = {
 
   '*': ["baseAuth","keyAuth"],
   'InternalController' : {
-    "check/username" : "baseAuth",
-    register : "baseAuth",
-    login : "baseAuth"
+    "*" : "baseAuth",
+    "logout" : ["baseAuth","keyAuth"]
     },
   'TokensController' : {
     "phone/send" : "baseAuth"
