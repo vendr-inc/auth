@@ -24,13 +24,14 @@ module.exports = {
   /***************************************************************************
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
+   port : 80
 
-  port: 443,
-  ssl: {
-    // ca: require('fs').readFileSync(__dirname + './certs/my_apps_ssl_gd_bundle.crt'),
-    key: require('fs').readFileSync(__dirname + '/ssl/vendr.key'),
-    cert: require('fs').readFileSync(__dirname + '/ssl/vendr.crt')
-    },
+  // port: 443,
+  // ssl: {
+  //   // ca: require('fs').readFileSync(__dirname + './certs/my_apps_ssl_gd_bundle.crt'),
+  //   key: require('fs').readFileSync(__dirname + '/ssl/vendr.key'),
+  //   cert: require('fs').readFileSync(__dirname + '/ssl/vendr.crt')
+  //   },
 
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
