@@ -1,8 +1,8 @@
 {
-  "name": "auth",
+  "name": "vendr-auth",
   "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
+  "version": "1.0.0",
+  "description": "Vendr Auth Server",
   "keywords": [],
   "dependencies": {
     "ejs": "2.3.4",
@@ -30,16 +30,16 @@
     "twilio":"*",
     "nodemailer":"*",
     "fb":"*"
-  },
+    },
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js"
-  },
+    },
   "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/vendr-inc/auth.git"
-  },
+    },
   "author": "aamir",
   "license": ""
 }

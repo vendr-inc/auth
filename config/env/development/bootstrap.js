@@ -20,11 +20,9 @@ module.exports.bootstrap = function(cb) {
 	global.request = require('request');
 	global.q = require("q");
 
-
 	global.fb = require('fb')
 	global.fb_client_id = "153181341813266"
 	global.fb_client_secret  = "5ff377ffe9b39dcd5f5f528509c91495"
-
 
 	global.lhost = "localhost"
 
@@ -34,24 +32,23 @@ module.exports.bootstrap = function(cb) {
  //  	var redis = require("redis");
 	// global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
-
 	const{ tryCatch } = require('co-try-catch');
 
 	global.services = {
 		financials : {
 			service : 'financials',
-			host : 'http://fn.vendr.tech',
-			port : '80'
+			host : 'https://fn.vendr.tech',
+			port : '443'
 			},
 		auth : {
 			service : 'auth',
-			host : 'http://auth.vendr.tech',
-			port : '80'
+			host : 'https://auth.vendr.tech',
+			port : '443'
 			},
 		ec : {
 			service : 'ecommerce',
-			host : 'http://ec.vendr.tech',
-			port : '80'
+			host : 'https://ec.vendr.tech',
+			port : '443'
 			}
 		}
 

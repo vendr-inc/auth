@@ -20,6 +20,6 @@ module.exports = {
   models: {
     connection: 'MongoDev'
   	},
-  port : 80
+  port : 80,
 
 };

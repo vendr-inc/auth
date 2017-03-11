@@ -14,6 +14,6 @@ RUN npm install
 
 COPY . /service/app
 
-EXPOSE 80
+EXPOSE 443
 
 CMD NODE_ENV=production sails lift
