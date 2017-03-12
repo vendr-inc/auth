@@ -22,7 +22,6 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.blueprints.html
  *
  */
-
 module.exports.blueprints = {
 
   /***************************************************************************

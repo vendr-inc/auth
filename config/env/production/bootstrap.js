@@ -28,7 +28,6 @@ module.exports.bootstrap = function(cb) {
 
 	global.mongodb = require('mongodb').ObjectID
 
-
  //  	var redis = require("redis");
 	// global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
