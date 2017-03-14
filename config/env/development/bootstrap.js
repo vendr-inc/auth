@@ -28,7 +28,6 @@ module.exports.bootstrap = function(cb) {
 
 	global.mongodb = require('mongodb').ObjectID
 
-
  //  	var redis = require("redis");
 	// global.redisclient = redis.createClient({host: lhost, port:"6379"});
 
@@ -37,17 +36,17 @@ module.exports.bootstrap = function(cb) {
 	global.services = {
 		financials : {
 			service : 'financials',
-			host : 'https://fn.vendr.tech',
+			host : 'https://dev.fn.vendr.tech',
 			port : '443'
 			},
 		auth : {
 			service : 'auth',
-			host : 'https://auth.vendr.tech',
+			host : 'https://dev.auth.vendr.tech',
 			port : '443'
 			},
 		ec : {
 			service : 'ecommerce',
-			host : 'https://ec.vendr.tech',
+			host : 'https://dev.ec.vendr.tech',
 			port : '443'
 			}
 		}

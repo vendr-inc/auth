@@ -20,6 +20,10 @@ module.exports = {
   models: {
     connection: 'MongoDev'
   	},
-  port : 80,
+  port: 443,
+  ssl: {
+    key: require('fs').readFileSync(__dirname + '/ssl/vendr.key'),
+    cert: require('fs').readFileSync(__dirname + '/ssl/vendr.crt')
+    },
 
 };
