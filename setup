@@ -50,3 +50,7 @@ https://code.tutsplus.com/tutorials/setting-up-continuous-integration-continuous
 
 TO COPY FILES BETWEEN SERVERS (SUCH AS KEYS TO NEW SERVER)
 scp -i mykey.pem somefile.txt root@my.ec2.id.amazonaws.com:/
+
+
+TO FIX SUDO COMMAND NOT FOUND
+chmod +u+x PROGRAMNAME
