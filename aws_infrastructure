@@ -1,0 +1,7 @@
+Mongo Setup AWS
+
+
+ssh -i "vendr-dev.pem" ec2-user@ec2-54-215-240-54.us-west-1.compute.amazonaws.com
+
+
+just testing that this only updates dev
