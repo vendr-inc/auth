@@ -70,7 +70,7 @@ module.exports.connections = {
     },
   MongoProd: {
     adapter: 'sails-mongo',
-    host : '172.31.19.242',
+    host : '10.0.1.110',
     port: 27017,
     // user: 'username', //optional
     // password: 'password', //optional
