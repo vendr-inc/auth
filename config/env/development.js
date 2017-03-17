@@ -22,7 +22,7 @@ module.exports = {
   	},
   port: 443,
   ssl: {
-    ca: require('fs').readFileSync(__dirname + '/ssl/intermediates.crt'),
+    // ca: require('fs').readFileSync(__dirname + '/ssl/intermediates.crt'),
     key: require('fs').readFileSync(__dirname + '/ssl/vendr.key'),
     cert: require('fs').readFileSync(__dirname + '/ssl/vendr.crt')
     },
