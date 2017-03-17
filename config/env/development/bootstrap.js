@@ -38,17 +38,17 @@ module.exports.bootstrap = function(cb) {
 	global.services = {
 		financials : {
 			service : 'financials',
-			host : 'https://dev.fn.vendr.tech',
+			host : 'https://dev-fn.vendr.tech',
 			port : '443'
 			},
 		auth : {
 			service : 'auth',
-			host : 'https://dev.auth.vendr.tech',
+			host : 'https://dev-auth.vendr.tech',
 			port : '443'
 			},
 		ec : {
 			service : 'ecommerce',
-			host : 'https://dev.ec.vendr.tech',
+			host : 'https://dev-ec.vendr.tech',
 			port : '443'
 			}
 		}
