@@ -19,12 +19,12 @@ module.exports = {
 		co(function*(){
 
 			var token = yield Tokens.findOne({ data: data.phone, token : data.code })
-			if(!token && data.code != "TEST") return res.send(200, Response.failure("That was not a valid code"))
+			if(!token) return res.send(200, Response.failure("That was not a valid code"))
 
 			var update = yield Accounts.update({ id: req.active_account.id } , { phone : data.phone })
 			if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
 
-			if(data.code != "TEST"){
+			if(data.code){
 				Tokens.destroy({id:token.id}).exec(function(err){
 					if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 					})

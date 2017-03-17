@@ -128,7 +128,7 @@ module.exports = {
 		co(function*(){
 
 			var token = yield Tokens.findOne({ data: data.phone, token : code })
-			if(!token && code != "TEST") return res.send(200, Response.failure("This is not a valid code."))
+			if(!token) return res.send(200, Response.failure("This is not a valid code."))
 
 			// if(Date.now() > Number(token.exp_time))	return res.send(200, Response.failure("Please request a new code because this one has expired."))
 
@@ -140,7 +140,7 @@ module.exports = {
 
 			var account = yield Accounts.create(data)
 
-			if(code != "TEST"){
+			if(code){
 				Tokens.destroy({id:token.id}).exec(function(err){
 					if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 					})
