@@ -145,7 +145,7 @@ module.exports = {
 					if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 					})
 				}
-					
+			
 
 			var key = yield Keys.create({
 				account_id : account.id,
@@ -195,7 +195,6 @@ module.exports = {
 			if(found.password !== Token.hash(data.password)) return res.send(200, Response.failure("The password was incorrect."))
 
 			// TODO let's delete all the previous keys issued to this user
-
 
 			Keys.create({
 				account_id : found.id,
