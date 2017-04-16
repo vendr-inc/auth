@@ -80,7 +80,11 @@ module.exports = {
 							if(typeof tbtested != "string"){
 								errors[key] = { msg : "The phone number has to be submitted as a string." }
 								}
-							else go++
+							else {
+								tbtested = tbtested.replace(/-|\s/g,"")
+								tbtested = tbtested.replace(/[{()}]/g, "")
+								go++
+								}
 							break;
 						case "category":
 						case "condition":

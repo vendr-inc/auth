@@ -26,19 +26,19 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': ["baseAuth","keyAuth"],
+  '*': ["allAuth", "baseAuth","keyAuth"],
   'InternalController' : {
-    "*" : "baseAuth",
-    "logout" : ["baseAuth","keyAuth"]
+    "*" : ["allAuth", "baseAuth"],
+    "logout" : ["allAuth","baseAuth","keyAuth"]
     },
   'TokensController' : {
-    "*" : "baseAuth"
+    "*" : ["allAuth", "baseAuth"]
     },
   'FacebookController':{
-    register : ["baseAuth","facebookAuth"],
-    login : ["facebookAuth"],
-    test : ["facebookAuth"],
-    extend : ["baseAuth","facebookAuth"]
+    register : ["allAuth", "baseAuth","facebookAuth"],
+    login : ["allAuth", "facebookAuth"],
+    test : ["allAuth", "facebookAuth"],
+    extend : ["allAuth", "baseAuth","facebookAuth"]
     },
     'VoipController' : "allAuth"
 

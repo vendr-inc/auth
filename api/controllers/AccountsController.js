@@ -9,7 +9,7 @@ module.exports = {
 	
 	"update/phone" : function(req,res){
 		var data = {
-			phone : { v:'string' },
+			phone : { v:'phone' },
 			code : { v:'string' }
 			}
 		
