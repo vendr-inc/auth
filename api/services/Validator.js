@@ -82,6 +82,7 @@ module.exports = {
 								}
 							else {
 								tbtested = tbtested.replace(/-|\s/g,"")
+								tbtested = tbtested.replace(/[{()}]/g, "")
 								go++
 								}
 							break;
