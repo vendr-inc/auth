@@ -83,7 +83,10 @@ module.exports = {
 							else {
 								tbtested = tbtested.replace(/-|\s/g,"")
 								tbtested = tbtested.replace(/[{()}]/g, "")
-								go++
+
+								if(tbtested.charAt(0) == "1") tbtested = tbtested.slice(1)
+								if(tbtested.length != 10) errors[key] = { msg : "The phone number is invalid. It must be a US phone number." }
+								else go++
 								}
 							break;
 						case "category":
