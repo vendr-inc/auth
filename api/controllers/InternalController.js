@@ -48,7 +48,7 @@ module.exports = {
 		},
 	"forgot/password/validate" : function(req, res){
 		var data = {
-			phone : { v:'string' },
+			phone : { v:'phone' },
 			code : { v:'string' }
 			}
 
