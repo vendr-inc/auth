@@ -111,17 +111,19 @@ module.exports = {
 			middle_name : { v:'string', b:true },
 			last_name : { v:'string' },
 			user_name : { v:'string' },
-			password : { v:'string' }
+			password : { v:'string' },
+			updated : { v:'string' }
 			}
 
 		data = Validator.run(data,req.body);
-		if(data.failure) return res.send(200, data);
-
+		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		
 		if(data.email) data.email_token = Token.generate();
 		data.password = Token.hash(data.password);
 
 		var code = data.code;
 		delete data.code
+		delete data.updated
 
 		// making small change
 
@@ -179,12 +181,13 @@ module.exports = {
 	login : function(req, res){
 		var data = {
 			phone : { v:'phone', b:true , eo : { user_name : { v:'string' , b:true } } },
-			password : { v:'string' }
+			password : { v:'string' },
+			updated : { v:'string' }
 			}
 
 		data = Validator.run(data,req.body);
-		if(data.failure) return res.send(200, data);
-
+		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		
 		var credential = (data.phone?{phone:data.phone}:{user_name : data.user_name})
 		
 		Accounts.findOne(credential).exec(function(err, found){

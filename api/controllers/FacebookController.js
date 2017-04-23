@@ -23,15 +23,17 @@ module.exports = {
 			middle_name : { v:'string', b:true },
 			last_name : { v:'string' },
 			user_name : { v:'string' },
+			updated : { v:'string' }
 			}
 
 		data = Validator.run(data,req.body);
-		if(data.failure) return res.send(200, data);
+		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 
 		if(data.email) data.email_token = Token.generate();
 		
 		var code = data.code;
 		delete data.code
+		delete data.updated
 
 		// making small changes
 
@@ -103,6 +105,12 @@ module.exports = {
 
 		},
 	login : function(req,res){
+		var data = {
+			updated : { v:'string' },
+			}
+
+		data = Validator.run(data,req.body);
+		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 
 		fb.api('/me' , { fields : ['id','first_name','last_name','email','birthday','gender','hometown','age_range','interested_in'] } , function(fbres){
 
