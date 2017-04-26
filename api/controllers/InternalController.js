@@ -104,7 +104,7 @@ module.exports = {
 		},
 	register : function(req, res){
 		var data = {
-			email : { v:'email', b:true },
+			email : { v:'email' },
 			phone : { v:'phone' },
 			code : { v:'string' },
 			first_name : { v:'string' },
