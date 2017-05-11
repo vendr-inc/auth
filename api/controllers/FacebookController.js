@@ -75,7 +75,7 @@ module.exports = {
 							key : Token.auth_key(account.id),
 							exp_time : Token.expiration(),
 							user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-							ip_address : Utils.ip(req.ip)
+							ip_address : req.real_ip
 							})
 
 						if(!key) return res.send(200,Response.failure("Authorization could not occur."))
@@ -143,7 +143,7 @@ module.exports = {
 							key : Token.auth_key(account.id),
 							exp_time : Token.expiration(),
 							user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-							ip_address : Utils.ip(req.ip)
+							ip_address : req.real_ip
 							})
 					if(!key) return res.send(200, Response.failure("There was an error processing this request."))
 
