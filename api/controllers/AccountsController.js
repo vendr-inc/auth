@@ -1,4 +1,4 @@
-/**
+	/**
  * AccoutnsController
  *
  * @description :: Server-side logic for managing Accounts
@@ -6,7 +6,27 @@
  */
 
 module.exports = {
+
+	"email/get" : function(req,res){
+		var data = {
+			id : { v:'string' }
+			}
+		
+		data = Validator.run(data, req.body)
+		if(data.failure) return res.send(200,data)
+
+		co(function*(){
+
+			var account = yield Accounts.findOne({ id:data.id })
+			if(!account) return res.send(200, Response.failure("That was not a valid account id"))
+
+			return res.send(200, Response.success({ data : { email : account.email } }))
 	
+			}).catch(err => res.send(200,Response.failure(err)))
+		},
+	"email/verify" : function(req,res){
+
+		},
 	"update/phone" : function(req,res){
 		var data = {
 			phone : { v:'phone' },
