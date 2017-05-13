@@ -23,6 +23,7 @@ module.exports = {
 			middle_name : { v:'string', b:true },
 			last_name : { v:'string' },
 			user_name : { v:'string' },
+			referral_code : { v:'string' , b:true },
 			updated : { v:'string' }
 			}
 
