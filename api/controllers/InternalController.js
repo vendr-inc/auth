@@ -112,6 +112,7 @@ module.exports = {
 			last_name : { v:'string' },
 			user_name : { v:'string' },
 			password : { v:'string' },
+			referral_code : { v:'string' , b:true },
 			updated : { v:'string' }
 			}
 
