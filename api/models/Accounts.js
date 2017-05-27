@@ -14,6 +14,11 @@ module.exports = {
       email_token : {
         type : 'string'
         },
+      email_verified : {
+        type : 'boolean',
+        required : true,
+        defaultsTo : false
+        },
       first_name : {
         type : 'string',
         required: true
