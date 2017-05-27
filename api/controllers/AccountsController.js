@@ -26,6 +26,26 @@ module.exports = {
 		},
 	"email/verify" : function(req,res){
 
+		var data = {
+			code : { v:'string' }
+			}
+		
+		data = Validator.run(data, req.body)
+		if(data.failure) return res.send(200,data)
+
+		co(function*(){
+
+			var account = yield Accounts.findOne({ id:req.active_account.id })
+			if(!account) return res.send(200, Response.failure("That was not a valid account id"))
+
+			if(account.email_token != data.code) return res.send(200, Response.failure("That was an invalid code. Please check the code and try again."))
+
+			var update = yield Accounts.update({ id: req.active_account.id } , { email_verified : true })
+			if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
+
+			return res.send(200, Response.success("Account updated."))
+		
+			}).catch(err => res.send(200,Response.failure(err)))
 		},
 	"update/phone" : function(req,res){
 		var data = {

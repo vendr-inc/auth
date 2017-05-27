@@ -109,6 +109,7 @@ module.exports = {
 								auth_user_name : account.user_name,
 								auth_phone : account.phone,
 								auth_email : account.email,
+								auth_email_verified : account.email_verified,
 								auth_id : account.id,
 								auth_key : key.key,
 								exp_time : key.exp_time,
@@ -152,9 +153,17 @@ module.exports = {
 						email : fbres.email
 						}, code : 2000}))
 
-
+					// if we have the emails from before 1.2, we have to add the verification field
 					// update the access token
-					var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token })
+
+					if(!account.email_verified) {
+						var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token, email_verified : false })
+						}
+					else{
+						var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token })
+
+						}
+
 					if(!account_update) return res.send(200, Response.failure("We couldn't update the tokens."))
 
 
@@ -176,6 +185,7 @@ module.exports = {
 							auth_user_name : account.user_name,
 							auth_phone : account.phone,
 							auth_email : account.email,
+							auth_email_verified : (account.email_verified?account.email_verified:false),
 							auth_id : account.id,
 							auth_key : key.key,
 							exp_time : key.exp_time,
