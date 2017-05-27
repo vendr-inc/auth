@@ -32,7 +32,7 @@ module.exports = {
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
 		
-		if(data.email) data.email_token = Token.generate();
+		data.email_token = Token.generate(null, 6);
 		
 		var code = data.code;
 		delete data.code
@@ -53,6 +53,7 @@ module.exports = {
 			var check_phone = yield Accounts.findOne({ phone : data.phone })
 			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
 
+
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 
@@ -65,11 +66,26 @@ module.exports = {
 
 					co(function*(){
 
+						var check_fb = yield Accounts.findOne({ facebook : fbres.id })
+						if(check_fb) return res.send(200, Response.failure("This Facebook profile has already been registered."))
+
+
 						data.facebook_at = fbres_et.access_token
 						var account = yield Accounts.create(data)
 
 						Tokens.destroy({id:token.id}).exec(function(err){
 							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
+							})
+
+
+						Emails.send({
+							template : 'verify_email',
+							email : data.email,
+							context : {
+								username: data.user_name,
+								code : data.email_token
+								},
+							subject : 'Vendr - Email Verification'
 							})
 							
 
