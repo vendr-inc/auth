@@ -203,41 +203,45 @@ module.exports = {
 			if(found.active == 0) return res.send(200, Response.failure("This account has been disabled. Please contact Peoplr."))
 			if(found.password !== Token.hash(data.password)) return res.send(200, Response.failure("The password was incorrect."))
 
-
-			// if we have the emails from before 1.2, we have to add the verification field
-
-			if(!account.email_verified) {
-				var account_update = yield Accounts.update({ id : found.id } , { email_verified : false })
-				if(!account_update) return res.send(200, Response.failure("We couldn't update the profile."))
-				}
+			co(function*(){
 
 
-			// TODO let's delete all the previous keys issued to this user
+				// if we have the emails from before 1.2, we have to add the verification field
 
-			Keys.create({
-				account_id : found.id,
-				key : Token.auth_key(found.id),
-				exp_time : Token.expiration(),
-				user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-				ip_address : req.real_ip
-				}).exec(function(err, created){
-					if(err) return res.send(200, Response.failure(err))
-					return res.send(200, Response.success({
-						msg : "Valid login.",
-						data : {
-							auth_first_name : found.first_name,
-							auth_last_name : found.last_name,
-							auth_name : found.first_name + " " + found.last_name,
-							auth_user_name : found.user_name,
-							auth_phone : found.phone,
-							auth_email : found.email,
-							auth_email_verified : (found.email_verified?found.email_verified:false),
-							auth_id : found.id,
-							auth_key : created.key,
-							exp_time : created.exp_time
-							}
-						}))
-					})
+				if(!account.email_verified) {
+					var account_update = yield Accounts.update({ id : found.id } , { email_verified : false })
+					if(!account_update) return res.send(200, Response.failure("We couldn't update the profile."))
+					}
+
+
+				// TODO let's delete all the previous keys issued to this user
+
+				Keys.create({
+					account_id : found.id,
+					key : Token.auth_key(found.id),
+					exp_time : Token.expiration(),
+					user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
+					ip_address : req.real_ip
+					}).exec(function(err, created){
+						if(err) return res.send(200, Response.failure(err))
+						return res.send(200, Response.success({
+							msg : "Valid login.",
+							data : {
+								auth_first_name : found.first_name,
+								auth_last_name : found.last_name,
+								auth_name : found.first_name + " " + found.last_name,
+								auth_user_name : found.user_name,
+								auth_phone : found.phone,
+								auth_email : found.email,
+								auth_email_verified : (found.email_verified?found.email_verified:false),
+								auth_id : found.id,
+								auth_key : created.key,
+								exp_time : created.exp_time
+								}
+							}))
+						})
+					
+				}).catch(err => res.send(200,Response.failure(err)))
 			})
 		},
 	logout : function(req, res){
