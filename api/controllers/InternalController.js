@@ -117,6 +117,12 @@ module.exports = {
 			}
 
 		data = Validator.run(data,req.body);
+
+
+		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
+
+
+
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		
 		if(data.failure) return res.send(200, data);
@@ -191,6 +197,9 @@ module.exports = {
 
 		data = Validator.run(data,req.body);
 
+		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
+		
+
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
 	
@@ -240,7 +249,7 @@ module.exports = {
 								}
 							}))
 						})
-					
+
 				}).catch(err => res.send(200,Response.failure(err)))
 			})
 		},
