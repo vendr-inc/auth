@@ -29,7 +29,9 @@
     "co-try-catch":"*",
     "twilio":"*",
     "nodemailer":"*",
-    "fb":"*"
+    "fb":"*",
+    "email-templates" : "*",
+    "handlebars" : "*"
     },
   "scripts": {
     "debug": "node debug app.js",

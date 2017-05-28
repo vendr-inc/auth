@@ -28,9 +28,14 @@ module.exports = {
 			}
 
 		data = Validator.run(data,req.body);
-		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 
-		if(data.email) data.email_token = Token.generate();
+		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
+
+
+		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		if(data.failure) return res.send(200, data);
+		
+		data.email_token = Token.generate(null, 6);
 		
 		var code = data.code;
 		delete data.code
@@ -51,6 +56,7 @@ module.exports = {
 			var check_phone = yield Accounts.findOne({ phone : data.phone })
 			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
 
+
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 
@@ -63,11 +69,26 @@ module.exports = {
 
 					co(function*(){
 
+						var check_fb = yield Accounts.findOne({ facebook : fbres.id })
+						if(check_fb) return res.send(200, Response.failure("This Facebook profile has already been registered."))
+
+
 						data.facebook_at = fbres_et.access_token
 						var account = yield Accounts.create(data)
 
 						Tokens.destroy({id:token.id}).exec(function(err){
 							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
+							})
+
+
+						Emails.send({
+							template : 'verify_email',
+							email : data.email,
+							context : {
+								username: data.user_name,
+								code : data.email_token
+								},
+							subject : 'Vendr - Email Verification'
 							})
 							
 
@@ -91,6 +112,7 @@ module.exports = {
 								auth_user_name : account.user_name,
 								auth_phone : account.phone,
 								auth_email : account.email,
+								auth_email_verified : account.email_verified,
 								auth_id : account.id,
 								auth_key : key.key,
 								exp_time : key.exp_time,
@@ -111,7 +133,13 @@ module.exports = {
 			}
 
 		data = Validator.run(data,req.body);
-		if(data.failure) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+
+
+		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
+		
+
+		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		if(data.failure) return res.send(200, data);
 
 		fb.api('/me' , { fields : ['id','first_name','last_name','email','birthday','gender','hometown','age_range','interested_in'] } , function(fbres){
 
@@ -133,9 +161,17 @@ module.exports = {
 						email : fbres.email
 						}, code : 2000}))
 
-
+					// if we have the emails from before 1.2, we have to add the verification field
 					// update the access token
-					var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token })
+
+					if(!account.email_verified) {
+						var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token, email_verified : false })
+						}
+					else{
+						var account_update = yield Accounts.update({ id : account.id } , { facebook_at : fbres_et.access_token })
+
+						}
+
 					if(!account_update) return res.send(200, Response.failure("We couldn't update the tokens."))
 
 
@@ -157,6 +193,7 @@ module.exports = {
 							auth_user_name : account.user_name,
 							auth_phone : account.phone,
 							auth_email : account.email,
+							auth_email_verified : (account.email_verified?account.email_verified:false),
 							auth_id : account.id,
 							auth_key : key.key,
 							exp_time : key.exp_time,

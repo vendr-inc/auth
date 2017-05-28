@@ -1,5 +1,5 @@
 module.exports = {
-	generate : function(id) {
+	generate : function(id, length) {
 		!id?id=(Math.random().toString(36).substring(7)):null
 
 		var crypto = require('crypto');
@@ -12,7 +12,10 @@ module.exports = {
 		var s2 = id.substring(r2, id.length-1);
 		var s = s1 + r1 + s2;
 
-		return crypto.createHash('sha1').update(s).digest('hex');
+		var u = crypto.createHash('sha1').update(s).digest('hex');
+
+		if(length) return u.substring(0,length)
+		return u
 		},
 	auth_key : function(id){
 		var time = new Date();
