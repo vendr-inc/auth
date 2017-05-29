@@ -122,7 +122,7 @@ module.exports = {
 		
 		if(data.failure) return res.send(200, data);
 
-		if(data.email) data.email_token = Token.generate();
+		data.email_token = Token.generate();
 		data.password = Token.hash(data.password);
 
 		var code = data.code;
@@ -152,6 +152,15 @@ module.exports = {
 					})
 				}
 			
+			Emails.send({
+				template : 'verify_email',
+				email : data.email,
+				context : {
+					username: data.user_name,
+					code : data.email_token
+					},
+				subject : 'Email Verification'
+				})
 
 			var key = yield Keys.create({
 				account_id : account.id,
