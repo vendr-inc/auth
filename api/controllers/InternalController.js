@@ -218,7 +218,7 @@ module.exports = {
 
 				// if we have the emails from before 1.2, we have to add the verification field
 
-				if(!account.email_verified) {
+				if(!found.email_verified) {
 					var account_update = yield Accounts.update({ id : found.id } , { email_verified : false })
 					if(!account_update) return res.send(200, Response.failure("We couldn't update the profile."))
 					}
