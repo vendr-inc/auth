@@ -56,60 +56,67 @@ module.exports = {
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 
-				data.facebook = fbres.id
+				fb.api('/me/friends', fields : ['id'], function(fbres){
 
 
-				fb.api('/oauth/access_token', { client_id : fb_client_id, client_secret : fb_client_secret, grant_type : 'fb_exchange_token' , fb_exchange_token : req.fb_at }  , function(fbres_et){
+					console.log(fbres)
 
-					if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
+					})
 
-					co(function*(){
-
-						var check_fb = yield Accounts.findOne({ facebook : fbres.id })
-						if(check_fb) return res.send(200, Response.failure("This Facebook profile has already been registered."))
+				// data.facebook = fbres.id
 
 
-						data.facebook_at = fbres_et.access_token
-						data.email_verified = true
+				// fb.api('/oauth/access_token', { client_id : fb_client_id, client_secret : fb_client_secret, grant_type : 'fb_exchange_token' , fb_exchange_token : req.fb_at }  , function(fbres_et){
+
+				// 	if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
+
+				// 	co(function*(){
+
+				// 		var check_fb = yield Accounts.findOne({ facebook : fbres.id })
+				// 		if(check_fb) return res.send(200, Response.failure("This Facebook profile has already been registered."))
+
+
+				// 		data.facebook_at = fbres_et.access_token
+				// 		data.email_verified = true
 						
-						var account = yield Accounts.create(data)
+				// 		var account = yield Accounts.create(data)
 
-						Tokens.destroy({id:token.id}).exec(function(err){
-							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
-							})
+				// 		Tokens.destroy({id:token.id}).exec(function(err){
+				// 			if(err) console.log("The token with an id of "+token.id+" was not deleted.")
+				// 			})
 							
 
-						var key = yield Keys.create({
-							account_id : account.id,
-							key : Token.auth_key(account.id),
-							exp_time : Token.expiration(),
-							user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
-							ip_address : req.real_ip
-							})
+				// 		var key = yield Keys.create({
+				// 			account_id : account.id,
+				// 			key : Token.auth_key(account.id),
+				// 			exp_time : Token.expiration(),
+				// 			user_agent : (req.headers["user-agent"]?req.headers["user-agent"]:""),
+				// 			ip_address : req.real_ip
+				// 			})
 
-						if(!key) return res.send(200,Response.failure("Authorization could not occur."))
+				// 		if(!key) return res.send(200,Response.failure("Authorization could not occur."))
 
 
-						return res.send(200, Response.success({
-							msg : "Facebook registered and logged in.",
-							data : {
-								auth_first_name : account.first_name,
-								auth_last_name : account.last_name,
-								auth_name : account.first_name + " " + account.last_name,
-								auth_user_name : account.user_name,
-								auth_phone : account.phone,
-								auth_email : account.email,
-								auth_email_verified : account.email_verified,
-								auth_id : account.id,
-								auth_key : key.key,
-								exp_time : key.exp_time,
-								fb_id : account.facebook,
-								fb_at : fbres_et.access_token
-								}
-							}))	
+				// 		return res.send(200, Response.success({
+				// 			msg : "Facebook registered and logged in.",
+				// 			data : {
+				// 				auth_first_name : account.first_name,
+				// 				auth_last_name : account.last_name,
+				// 				auth_name : account.first_name + " " + account.last_name,
+				// 				auth_user_name : account.user_name,
+				// 				auth_phone : account.phone,
+				// 				auth_email : account.email,
+				// 				auth_email_verified : account.email_verified,
+				// 				auth_id : account.id,
+				// 				auth_key : key.key,
+				// 				exp_time : key.exp_time,
+				// 				fb_id : account.facebook,
+				// 				fb_at : fbres_et.access_token
+				// 				}
+				// 			}))	
 			
-						}).catch(err => res.send(200,Response.failure(err)))
-					})
+				// 		}).catch(err => res.send(200,Response.failure(err)))
+				// 	})
 				})
 			}).catch(err => res.send(200,Response.failure(err)))
 
