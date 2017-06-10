@@ -56,7 +56,7 @@ module.exports = {
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
 				if(!fbres || fbres.error) return res.send(200, Response.failure("This was not a valid access token."))
 
-				fb.api('/me/friends', fields : ['id'], function(fbres){
+				fb.api('/me/friends', {fields : ['id']}, function(fbres){
 
 
 					console.log(fbres)
