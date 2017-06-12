@@ -78,6 +78,16 @@ module.exports = {
 						Tokens.destroy({id:token.id}).exec(function(err){
 							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 							})
+
+						Emails.send({
+							template : 'verify_email',
+							email : data.email,
+							context : {
+								username: data.user_name,
+								code : data.email_token
+								},
+							subject : 'Email Verification'
+							})
 							
 
 						var key = yield Keys.create({
