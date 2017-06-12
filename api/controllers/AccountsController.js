@@ -47,6 +47,27 @@ module.exports = {
 		
 			}).catch(err => res.send(200,Response.failure(err)))
 		},
+	"email/resend" : function(req,res){
+
+		co(function*(){
+
+			var account = yield Accounts.findOne({ id:req.active_account.id })
+			if(!account) return res.send(200, Response.failure("That was not a valid account id"))
+
+			Emails.send({
+				template : 'verify_email',
+				email : account.email,
+				context : {
+					username: account.user_name,
+					code : account.email_token
+					},
+				subject : 'Email Verification'
+				})
+
+			return res.send(200, Response.success("Email sent."))
+		
+			}).catch(err => res.send(200,Response.failure(err)))
+		},
 	"update/phone" : function(req,res){
 		var data = {
 			phone : { v:'phone' },
