@@ -70,7 +70,8 @@ module.exports = {
 
 
 						data.facebook_at = fbres_et.access_token
-						data.email_verified = true
+						data.email_token = Token.generate(null, 6);
+						data.email_verified = false
 						
 						var account = yield Accounts.create(data)
 
