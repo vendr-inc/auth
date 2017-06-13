@@ -29,13 +29,9 @@ module.exports = {
 
 		data = Validator.run(data,req.body);
 
-		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
-
 
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
-		
-		data.email_token = Token.generate(null, 6);
 		
 		var code = data.code;
 		delete data.code
@@ -74,12 +70,14 @@ module.exports = {
 
 
 						data.facebook_at = fbres_et.access_token
+						data.email_token = Token.generate(null, 6);
+						data.email_verified = false
+						
 						var account = yield Accounts.create(data)
 
 						Tokens.destroy({id:token.id}).exec(function(err){
 							if(err) console.log("The token with an id of "+token.id+" was not deleted.")
 							})
-
 
 						Emails.send({
 							template : 'verify_email',
@@ -88,7 +86,7 @@ module.exports = {
 								username: data.user_name,
 								code : data.email_token
 								},
-							subject : 'Vendr - Email Verification'
+							subject : 'Email Verification'
 							})
 							
 
@@ -134,9 +132,6 @@ module.exports = {
 
 		data = Validator.run(data,req.body);
 
-
-		return res.send(200, Response.failure("Vendr is undergoing some changes and is being updated. Please try again later."))
-		
 
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
