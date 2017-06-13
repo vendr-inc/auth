@@ -105,7 +105,21 @@ module.exports = {
 
 		co(function*(){
 
-			var update = yield Accounts.update({ id: req.active_account.id } , { email : data.email })
+			let b = Token.generate(null, 6)
+
+			Emails.send({
+				template : 'verify_email',
+				email : data.email,
+				context : {
+					username: req.active_account.user_name,
+					code : b
+					},
+				subject : 'Email Verification'
+				})
+
+
+
+			var update = yield Accounts.update({ id: req.active_account.id } , { email : data.email, email_verified : false, email_token : b })
 			if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
 
 			return res.send(200, Response.success("Account updated."))
