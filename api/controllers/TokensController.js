@@ -26,15 +26,9 @@ module.exports = {
 				url : 'https://api.authy.com/protected/json/phones/info?&api_key=JTPtfmOKep0j5Z5Rnt70y1wXT8DeE6WL&phone_number='+data.phone+'&country_code=1'
 				} , function(err, resp, body){
 
-					console.log(err)
-					console.log(resp)
-					console.log(body)
-
 					try {
 						body = JSON.parse(body)
 						
-						console.log(body.message)
-
 						co(function*(){
 							
 							if(err) return res.send(200, Response.failure("The code could not be sent."))
