@@ -30,54 +30,62 @@ module.exports = {
 					console.log(resp)
 					console.log(body)
 
-					console.log(body.message)
-
-					co(function*(){
+					try {
+						body = JSON.parse(body)
 						
-						if(err) return res.send(200, Response.failure("The code could not be sent."))
-						if(!body.success) return res.send(200, Response.failure("This was not a valid cell phone number.1"))
-						if(body.type != "cellphone") return res.send(200, Response.failure("This was not a valid cell phone number.2"))
-						if(body.ported) return res.send(200, Response.failure("This is a ported number, which is not acceptable at the moment."))
+						console.log(body.message)
 
-						Tokens.findOne({ data : data.phone , type : "phone/send" }).exec(function(err, found){
-							if(err) return res.send(200, Response.failure(err))
+						co(function*(){
 							
-							var token = Math.floor(Math.random() * 9000) + 1000
+							if(err) return res.send(200, Response.failure("The code could not be sent."))
+							if(!body.success) return res.send(200, Response.failure("This was not a valid cell phone number."))
+							if(body.type != "cellphone") return res.send(200, Response.failure("This was not a valid cell phone number."))
+							if(body.ported) return res.send(200, Response.failure("This is a ported number, which is not acceptable at the moment."))
 
-							var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
+							Tokens.findOne({ data : data.phone , type : "phone/send" }).exec(function(err, found){
+								if(err) return res.send(200, Response.failure(err))
+								
+								var token = Math.floor(Math.random() * 9000) + 1000
 
-							client.messages.create({
-								to : data.phone,
-								from : "+13103128690",
-								body : "Your Vendr code is: " + token + ". Please use this code within 5 minutes to register your account successfully."
-								} , function(err, msg){
-									console.log(err)
-									if(err) return res.send(200, Response.failure("The code could not be sent."))
+								var client = require('twilio')("ACf2a6b1837b585b0a10259694beb74174", "365aa491eda9c6e67ccf897400b32bc6")
 
-									if(found){
-										Tokens.update({data:data.phone,type:"phone/send"},{
-											exp_time : Date.now() + (60*60*5*1000),
-											token : token,
-											}).exec(function(err, created){
-												if(err) return res.send(200, Response.failure(err))
-												return res.send(200, Response.success("A code was sent to " + data.phone + "."))
-												})
-										}
-									else{
-										Tokens.create({
-											type : "phone/send",
-											token : token,
-											data : data.phone,
-											exp_time : Date.now() + (60*60*5*1000),
-											}).exec(function(err, created){
-												if(err) return res.send(200, Response.failure(err))
-												return res.send(200, Response.success("A code was sent to " + data.phone + "."))
-												})
-										}
-									})
-							})
+								client.messages.create({
+									to : data.phone,
+									from : "+13103128690",
+									body : "Your Vendr code is: " + token + ". Please use this code within 5 minutes to register your account successfully."
+									} , function(err, msg){
+										console.log(err)
+										if(err) return res.send(200, Response.failure("The code could not be sent."))
 
-						}).catch(err => res.send(200,Response.failure(err)))
+										if(found){
+											Tokens.update({data:data.phone,type:"phone/send"},{
+												exp_time : Date.now() + (60*60*5*1000),
+												token : token,
+												}).exec(function(err, created){
+													if(err) return res.send(200, Response.failure(err))
+													return res.send(200, Response.success("A code was sent to " + data.phone + "."))
+													})
+											}
+										else{
+											Tokens.create({
+												type : "phone/send",
+												token : token,
+												data : data.phone,
+												exp_time : Date.now() + (60*60*5*1000),
+												}).exec(function(err, created){
+													if(err) return res.send(200, Response.failure(err))
+													return res.send(200, Response.success("A code was sent to " + data.phone + "."))
+													})
+											}
+										})
+								})
+
+							}).catch(err => res.send(200,Response.failure(err)))
+						}
+					catch(err){
+						return res.send(200, Response.failure("There was an unknown server error."))
+
+						}
 
 					})
 			})
