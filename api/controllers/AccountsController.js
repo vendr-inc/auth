@@ -55,15 +55,12 @@ module.exports = {
 			if(!account) return res.send(200, Response.failure("That was not a valid account id"))
 
 
-
+			var b = account.email_token
 			if(account.email_token.length != 6){
-				let b = Token.generate(null, 6);
+				b = Token.generate(null, 6);
 
 				var update = yield Accounts.update({ id: req.active_account.id } , { email_token : b })
 				if(!update) return res.send(200, Response.failure("The account could not be updated at this time"))
-				}
-			else{
-				let b = account.email_token
 				}
 
 			Emails.send({
