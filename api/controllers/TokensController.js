@@ -30,11 +30,13 @@ module.exports = {
 					console.log(resp)
 					console.log(body)
 
+					console.log(body.message)
+
 					co(function*(){
 						
 						if(err) return res.send(200, Response.failure("The code could not be sent."))
-						if(!body.success) return res.send(200, Response.failure("This was not a valid cell phone number."))
-						if(body.type != "cellphone") return res.send(200, Response.failure("This was not a valid cell phone number."))
+						if(!body.success) return res.send(200, Response.failure("This was not a valid cell phone number.1"))
+						if(body.type != "cellphone") return res.send(200, Response.failure("This was not a valid cell phone number.2"))
 						if(body.ported) return res.send(200, Response.failure("This is a ported number, which is not acceptable at the moment."))
 
 						Tokens.findOne({ data : data.phone , type : "phone/send" }).exec(function(err, found){
