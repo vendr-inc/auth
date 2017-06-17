@@ -33,6 +33,8 @@ module.exports = {
 		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
 		
+		data.email = data.email.toLowercase()
+		
 		var code = data.code;
 		delete data.code
 		delete data.updated
@@ -51,6 +53,9 @@ module.exports = {
 
 			var check_phone = yield Accounts.findOne({ phone : data.phone })
 			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
+
+			var check_email = yield Accounts.findOne({ email : data.email })
+			if(check_email) return res.send(200, Response.failure("This email has already been registered."))
 
 
 			fb.api('/me' , { fields : ['id'] } , function(fbres){
