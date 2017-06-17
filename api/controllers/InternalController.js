@@ -122,6 +122,7 @@ module.exports = {
 		
 		if(data.failure) return res.send(200, data);
 
+		data.email = data.email.toLowercase()
 		data.email_token = Token.generate(null, 6);
 		data.password = Token.hash(data.password);
 
@@ -143,6 +144,11 @@ module.exports = {
 
 			var check_phone = yield Accounts.findOne({ phone : data.phone })
 			if(check_phone) return res.send(200, Response.failure("This phone number has already been registered."))
+
+			var check_email = yield Accounts.findOne({ email : data.email })
+			if(check_email) return res.send(200, Response.failure("This email has already been registered."))
+
+
 
 			var account = yield Accounts.create(data)
 
