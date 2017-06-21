@@ -122,7 +122,7 @@ module.exports = {
 		
 		if(data.failure) return res.send(200, data);
 
-		data.email = data.email.toLowercase()
+		data.email = data.email.toLowerCase()
 		data.email_token = Token.generate(null, 6);
 		data.password = Token.hash(data.password);
 
