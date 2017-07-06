@@ -118,7 +118,7 @@ module.exports = {
 
 		data = Validator.run(data,req.body);
 
-		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		if(!data.updated || (data.updated && data.updated != "1.2.1")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		
 		if(data.failure) return res.send(200, data);
 
@@ -207,7 +207,7 @@ module.exports = {
 
 		data = Validator.run(data,req.body);
 
-		if(!data.updated || (data.updated && data.updated != "1.2")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
+		if(!data.updated || (data.updated && data.updated != "1.2.1")) return res.send(200, Response.failure("Your Vendr application is outdated and no longer supported. To continue using Vendr, please upgrade to the latest version from the App Store."))
 		if(data.failure) return res.send(200, data);
 	
 		var credential = (data.phone?{phone:data.phone}:{user_name : data.user_name})
