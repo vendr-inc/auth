@@ -4,7 +4,7 @@ RUN apt-get install -y git
 
 MAINTAINER Aamir Latif <aamir@vendr.tech>
 
-FROM nodesource/node:4.0
+FROM nodesource/node:6.0
 
 RUN npm install sails -g
 
