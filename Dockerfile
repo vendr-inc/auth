@@ -1,21 +1,22 @@
 FROM ubuntu:latest
 RUN apt-get update
-#RUN apt-get install -y git
-
+RUN apt-get install -y git
 
 MAINTAINER Aamir Latif <aamir@vendr.tech>
 
-FROM node:alpine
+FROM nodesource/node:4.0
 
 RUN npm install sails -g
 
 RUN mkdir -p /service/app
 WORKDIR /service/app
 
-#FROM vendr/auth:latest
+#FROM vendr/financials:latest
 
 COPY package.json /service/app
-RUN npm install
+#RUN export PATH="$HOME/usr/bin/git/bin:$PATH" 
+
+RUN npm install --production
 
 COPY . /service/app
 
