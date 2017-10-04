@@ -30,7 +30,7 @@
     "twilio":"*",
     "nodemailer":"*",
     "fb":"*",
-    "email-templates" : "*",
+    "email-templates" : "2.7.1",
     "handlebars" : "*"
     },
   "scripts": {
