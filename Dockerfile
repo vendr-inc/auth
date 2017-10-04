@@ -3,7 +3,7 @@ RUN apt-get update
 RUN apt-get install -y git
 
 MAINTAINER Aamir Latif <aamir@vendr.tech>
-FROM nodesource/jessie:latest
+FROM node
 
 RUN npm install sails -g
 
